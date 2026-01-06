@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão</title>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="conf.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="notificacoes.js"></script>
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">Revisão</div>
+        
+        <div class="nav-menu">
+            <a href="index.html" style="color: blue;">Início</a>
+            <a href="materias.html">Conteúdos</a>
+            <a href="anotações.html">Anotações</a>
+            <a href="configuracoes.html">Configurações</a>
+        </div>
+
+        <div class="controls">
+            <div class="notification-wrapper">
+                <button class="theme-btn" id="notif-btn">
+                    <i class="ph ph-bell"></i>
+                    <span class="notif-badge" id="notif-counter">0</span>
+                </button>
+                
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div class="notif-header">Notificações</div>
+                    <div class="notif-list" id="notif-list">
+                        </div>
+                </div>
+            </div>
+
+            <button class="theme-btn" id="theme-toggle"><i class="ph ph-moon"></i></button>
+            <button class="hamburger" id="hamburger"><i class="ph ph-list"></i></button>
+        </div>
+    </nav>
+</header>
+<div id="install-app" class="install-app-wrapper">
+    <div class="install-app-header">
+        <div class="install-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        </div>
+        <div class="install-text">
+            <h3>Instalar o app do Revisão</h3>
+            <p>Disponível somente para Android.<br>Melhore a sua experiência agora.</p>
+        </div>
+    </div>
+    
+    <a href="SEU_LINK_AQUI" class="btn-install-main">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Instalar Aplicativo
+    </a>
+
+    <button class="btn-install-secondary temp-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Agora não
+    </button>
+
+    <div class="install-divider"></div>
+
+    <div class="dismiss-options">
+        <button class="btn-dismiss perm-close">
+            <span>Já estou usando o aplicativo</span>
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      
+        <button class="btn-dismiss perm-close">
+            <span>Não tenho um dispositivo Android</span>
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        
+        <button class="btn-dismiss perm-close">
+            <span>Não mostrar novamente</span>
+            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+    </div>
+</div>
+
+    <section class="hero">
+        <h1>Bem vindo!</h1>
+        <p>Aproveite a nova interface do nosso site. <br> Agora muito melhor e organizada.</p>
+    </section>
+
+    <main class="feed-container">
+          <article class="post-card" data-offset="1"> 
+            <div class="post-meta">
+          <span class="badge em-alta">Destaque</span>
+<span class="time-ago" data-time="2026-01-01T15:47:00">
+  <i class="ph ph-clock"></i>
+  <span class="time-text">Calculando...</span>
+</span>
+            </div>
+            <h2>Nova interface visual</h2>
+            <p class="post-excerpt">Uma interface mais moderna, com icones e uma identidade visual melhor. Agora você terá mais qualidade nos seus conteúdos.</p>
+
+        </article>
+        
+        
+        
+        
+        <article class="post-card" data-offset="1"> 
+            <div class="post-meta">
+                <span class="badge novo">Novo</span>
+<span class="time-ago" data-time="2026-01-01T14:31:00">
+  <i class="ph ph-clock"></i>
+  <span class="time-text">Calculando...</span>
+</span>
+            </div>
+            <h2>Feliz ano novo a todos!</h2>
+            <p class="post-excerpt">Que esse ano de <b> 2026</b> seja repleto de felicidades a todos e muita paz!</p>
+
+        </article>
+
+        <article class="post-card" data-offset="120">
+            <div class="post-meta">
+                <span class="badge destaque">Destaque</span>
+                <span class="time-ago"><i class="ph ph-clock"></i> <span class="time-text">Calculando...</span></span>
+            </div>
+            <h2>Minimalismo Digital: Menos é Mais</h2>
+            <p class="post-excerpt">Limpando sua vida digital para focar no que realmente importa em um mundo hiperconectado.</p>
+         <button class="read-btn" onclick="window.location.href='Pagina.html'">
+  Ler artigo completo
+</button>
+        </article>
+
+        <article class="post-card" data-offset="1440">
+            <div class="post-meta">
+                <span class="badge novo">Review</span>
+                <span class="time-ago"><i class="ph ph-clock"></i> <span class="time-text">Calculando...</span></span>
+            </div>
+            <h2>Sony WH-1000XM5: Ainda vale a pena?</h2>
+            <p class="post-excerpt">Após 6 meses de uso intenso, revisistamos o fone de ouvido mais popular do mercado.</p>
+            <button class="read-btn" onclick="openModal('Sony WH-1000XM5', 'A qualidade de cancelamento de ruído continua imbatível, mas o design gerou controvérsias.')">Ler artigo completo</button>
+        </article>
+
+    </main>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()"><i class="ph ph-x"></i></button>
+            <h2 id="modal-title" style="font-size: 2rem; margin-bottom: 1rem;">Título</h2>
+            <p id="modal-body" style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">Conteúdo...</p>
+            <br>
+            <a href="index.html">
+    <button class="read-btn">Ver completo</button>
+</a>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
