@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horários</title>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="conf.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+        <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="notificacoes.js"></script>
+    <style>
+              /* --- CONFIGURAÇÕES DE VARIÁVEIS --- */
+        :root {
+            --fonte-site: 'Plus Jakarta Sans', sans-serif;
+            --fonte-tabela: 'Poppins', sans-serif;
+            --bg-site: #f4f6f8;
+            --texto-site: #111827;
+            --bg-menu: rgba(255, 255, 255, 0.95);
+            --borda-menu: #e5e7eb;
+            --botao-bg: #111827;
+            --botao-texto: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg-site: #121212;
+            --texto-site: #ffffff;
+            --bg-menu: rgba(18, 18, 18, 0.95);
+            --borda-menu: #333333;
+            --botao-bg: #ffffff;
+            --botao-texto: #000000;
+        }
+
+        /* --- ESTILOS GERAIS --- */
+        body {
+            font-family: var(--fonte-site);
+            background-color: var(--bg-site);
+            color: var(--texto-site);
+            margin: 0;
+            padding-bottom: 50px;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden; /* Evita rolagem lateral na página inteira */
+        }
+
+
+        /* --- CONTAINER PRINCIPAL --- */
+        .wrapper-conteudo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            /* Importante para o cálculo de altura no mobile */
+            position: relative; 
+        }
+
+        .btn-salvar {
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            background: var(--botao-bg);
+            color: var(--botao-texto);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10; /* Garante que o botão fique clicável */
+        }
+
+        /* --- ÁREA DA TABELA --- */
+        #area-para-download {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            /* Removemos width: 100% daqui para controlar via JS/CSS fixo */
+            width: 1050px; /* Largura FIXA original para manter o layout */
+            box-sizing: border-box;
+            color: #2c3e50;
+            transform-origin: top center; /* Para o zoom acontecer a partir do topo */
+        }
+
+        .titulo-principal {
+            text-align: center;
+            margin-bottom: 25px;
+            font-family: var(--fonte-tabela);
+        }
+        .titulo-principal h1 { margin: 0; font-size: 32px; font-weight: 700; color: #2c3e50; }
+        .titulo-principal span { display: block; margin-top: 6px; font-size: 15px; color: #6c7a89; }
+
+        .tabela-container-scroll {
+            width: 100%;
+            /* Removemos o overflow-x: auto para não ter scrollbar, vamos usar scale */
+        }
+
+        table {
+            width:100%; 
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: var(--fonte-tabela);
+        }
+
+        th, td { padding: 16px; text-align: center; font-size: 15px; border-bottom: 1px solid #dcdcdc; }
+        th { background-color: #5d9cec; color: white; font-weight: 600; border-bottom: 2px solid #3b7dd8; }
+
+        .celula-tempo {
+            font-weight: 600;
+            background-color: #f1f5fb;
+            color: #2c3e50;
+            text-align: left;
+            font-size: 14px;
+            width: 160px;
+            border-right: 1px solid #dcdcdc;
+        }
+
+        td:not(.celula-tempo) { border-right: 1px solid #eaeaea; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) td:not(.celula-tempo) { background-color: #fafbfc; }
+
+        .linha-recreio {
+            background-color: #fff4d6;
+            font-style: italic;
+            font-weight: 500;
+            color: #6c5a1a;
+        }
+        .linha-recreio td { padding: 20px 0; font-size: 16px; }
+
+        /* Ajustes Mobile */
+        @media (max-width: 768px) {
+            .menu-links { display: none; }
+            .wrapper-conteudo { padding: 10px 0; overflow: hidden; }
+            
+            /* O segredo: forçamos a tabela a não quebrar linha, mas vamos reduzi-la via JS */
+            .titulo-principal h1 { font-size: 32px; } /* Mantém grande no original */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">Revisão</div>
+        
+        <div class="nav-menu">
+            <a href="index.html" style="color: blue;">Início</a>
+            <a href="materias.html">Conteúdos</a>
+            <a href="anotações.html">Anotações</a>
+            <a href="configuracoes.html">Configurações</a>
+        </div>
+
+        <div class="controls">
+            <div class="notification-wrapper">
+                <button class="theme-btn" id="notif-btn">
+                    <i class="ph ph-bell"></i>
+                    <span class="notif-badge" id="notif-counter">0</span>
+                </button>
+                
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div class="notif-header">Notificações</div>
+                    <div class="notif-list" id="notif-list">
+                        </div>
+                </div>
+            </div>
+
+            <button class="theme-btn" id="theme-toggle"><i class="ph ph-moon"></i></button>
+            <button class="hamburger" id="hamburger"><i class="ph ph-list"></i></button>
+        </div>
+    </nav>
+</header>
+<br>
+<br>
+<br>
+<div class="wrapper-conteudo">
+
+
+
+    <div id="area-para-download">
+        <div class="titulo-principal">
+            <h1>Turma 105</h1>
+            <span>Horário das Aulas</span>
+        </div>
+
+        <div class="tabela-container-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Horário</th>
+                        <th>Segunda-feira</th>
+                        <th>Terça-feira</th>
+                        <th>Quarta-feira</th>
+                        <th>Quinta-feira</th>
+                        <th>Sexta-feira</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="celula-tempo">1ª aula<br>13:30</td>
+                        <td>Matemática/Matheus</td>
+                        <td>Matemática/Matheus</td>
+                        <td>Projeto Integrador/Andressa Martins</td>
+                        <td>Literatura/Juliana Silva</td>
+                        <td>Redação/ Juliana Silva</td>
+                    </tr>
+                    <tr>
+                        <td class="celula-tempo">2ª aula<br>14:20</td>
+                        <td>Biologia/Adriana</td>
+                        <td>Educação Financeira/Andressa Martins</td>
+                        <td>Filosofia/Márcio</td>
+                        <td>Química/Jaque</td>
+                        <td>Redação/Juliana Silva</td>
+                    </tr>
+                    <tr>
+                        <td class="celula-tempo">3ª aula<br>15:10</td>
+                        <td>Geografia/Vanessa</td>
+                        <td>Escrita Criativa/Juliana Silva</td>
+                        <td>Sociologia/Márcio</td>
+                        <td>História/Felipe</td>
+                        <td>Biologia/Adriana</td>
+                    </tr>
+                    <tr class="linha-recreio">
+                        <td colspan="6">15:50 - RECREIO</td>
+                    </tr>
+                    <tr>
+                        <td class="celula-tempo">4ª aula<br>16:05</td>
+                        <td>Física/Pedro</td>
+                        <td>Física/Pedro</td>
+                        <td>Matemática/Matheus</td>
+                        <td>Química/Jaque</td>
+                        <td>Matemática Aprofundada/Simone</td>
+                    </tr>
+                    <tr>
+                        <td class="celula-tempo">5ª aula<br>16:50</td>
+                        <td>Matemática Aprofundada/Simone</td>
+                        <td>Artes/Max</td>
+                        <td>História/Felipe</td>
+                        <td>Português/Ariadne</td>
+                        <td>Projeto Integrador/Andressa Martins</td>
+                    </tr>
+                    <tr>
+                        <td class="celula-tempo">6ª aula<br>17:40 - 18:30</td>
+                        <td>Português/Ariadne</td>
+                        <td>Inglês/Giovana</td>
+                        <td>Espanhol/Jorge</td>
+                        <td>Português/Ariadne</td>
+                        <td>Educação Física/ Adriana Moreira</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+        <button class="btn-salvar" onclick="baixarImagem()">
+        <i class="ph ph-download-simple"></i> Baixar Tabela
+    </button>
+</div>
+
+
+    <script src="scripts.js"></script>
+    <script>
+          // --- LÓGICA DE ESCALA PARA MOBILE ---
+    function ajustarTabelaMobile() {
+        const tabela = document.getElementById('area-para-download');
+        const wrapper = document.querySelector('.wrapper-conteudo');
+        
+        // A largura original que a tabela PRECISA ter para ficar bonita
+        const larguraOriginalTabela = 1050; 
+        
+        // A largura atual da tela do usuário
+        const larguraTela = window.innerWidth;
+
+        if (larguraTela < larguraOriginalTabela) {
+            // Calcula a proporção (Scale)
+            // Subtraímos 20px para deixar uma margem de segurança nas laterais
+            const escala = (larguraTela - 20) / larguraOriginalTabela;
+            
+            // Aplica o zoom via CSS Transform
+            tabela.style.transform = `scale(${escala})`;
+            
+            // Como o 'scale' diminui visualmente mas mantém o espaço físico original no DOM,
+            // precisamos ajustar a altura do container pai para não ficar um buraco enorme embaixo.
+            const alturaOriginal = tabela.getBoundingClientRect().height; 
+            // Altura Ajustada = Altura Atual * escala (mas o getBoundingClientRect já pega transformado em alguns browsers, 
+            // então usamos scrollHeight para garantir a altura "real" sem zoom e multiplicamos).
+            
+            // Método mais simples para corrigir o espaço em branco:
+            // Margem negativa inferior baseada na redução
+            const alturaReal = tabela.scrollHeight;
+            const espacoSobrando = alturaReal - (alturaReal * escala);
+            tabela.style.marginBottom = `-${espacoSobrando}px`;
+            
+        } else {
+            // Reset para Desktop
+            tabela.style.transform = 'none';
+            tabela.style.marginBottom = '0';
+        }
+    }
+
+    // Executa ao carregar e ao redimensionar a tela
+    window.addEventListener('load', ajustarTabelaMobile);
+    window.addEventListener('resize', ajustarTabelaMobile);
+
+    // --- FUNÇÕES ORIGINAIS ---
+    function alternarTema() {
+        document.body.classList.toggle('dark-mode');
+        const icone = document.querySelector('.botao-tema i');
+        if (document.body.classList.contains('dark-mode')) {
+            icone.classList.replace('ph-moon', 'ph-sun');
+        } else {
+            icone.classList.replace('ph-sun', 'ph-moon');
+        }
+    }
+
+    function baixarImagem() {
+        const elemento = document.getElementById("area-para-download");
+        const btn = document.querySelector('.btn-salvar');
+        
+        // Guarda estilo atual para restaurar depois (caso o scale interfira no print)
+        const transformAnterior = elemento.style.transform;
+        const marginAnterior = elemento.style.marginBottom;
+
+        // Reseta o scale momentaneamente para o print sair em alta resolução (tamanho original)
+        // Se deixarmos o scale, a imagem sai pequena e pixelada.
+        elemento.style.transform = 'none';
+        elemento.style.marginBottom = '0';
+
+        // Feedback visual
+        const textoAntigo = btn.innerHTML;
+        btn.innerHTML = "Gerando...";
+
+        // Pequeno delay para o navegador renderizar o reset de estilo
+        setTimeout(() => {
+            html2canvas(elemento, {
+                scale: 2, 
+                useCORS: true,
+                backgroundColor: "#ffffff",
+                width: 1050, // Força a largura total no canvas
+                windowWidth: 1050 // Simula uma janela desktop pro print
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "horario-turma-105.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                btn.innerHTML = textoAntigo;
+                
+                // Restaura o visual mobile
+                elemento.style.transform = transformAnterior;
+                elemento.style.marginBottom = marginAnterior;
+            });
+        }, 100);
+    }
+    </script>
+</body>
+</html>
