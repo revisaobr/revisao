@@ -216,8 +216,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (tempCloseButton) {
         tempCloseButton.addEventListener('click', () => {
             closePopup();
-            // 1 Hora = 3600000ms
-            const oneHourLater = new Date().getTime() + (60 * 60 * 1000);
+// 12 Horas = 43200000ms
+const twelveHoursLater = new Date().getTime() + (12 * 60 * 60 * 1000);
             
             setTimeout(() => {
                 localStorage.setItem(KEY_TEMP_UNTIL, oneHourLater);

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da nova versão do Revisão</title>
+
+    <script src="conf.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+    <script src="notificacoes.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+<style>
+    :root {
+        --font-main: 'Plus Jakarta Sans', sans-serif;
+        --prose-width: 760px;
+
+        --bg-color: #ffffff;
+        --cordabarra: rgba(255, 255, 255, 0.85);
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --accent-color: #020617;
+        --border-color: #e5e7eb;
+        --code-bg: #f1f5f9;
+        --quote-border: #020617;
+    }
+
+    body.dark-mode {
+        --bg-color: #000000;
+        --cordabarra: rgba(5, 5, 5, 0.85);
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent-color: #60a5fa;
+        --border-color: #27272a;
+        --code-bg: #18181b;
+        --quote-border: #60a5fa;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+    }
+
+    body {
+
+        color: var(--text-primary);
+        font-family: var(--font-main);
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* ===== CONTEÚDO ===== */
+
+    .article-container {
+        max-width: var(--prose-width);
+        margin: 120px auto 100px;
+        padding: 0 22px;
+    }
+
+    .article-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .article-title {
+        font-size: clamp(2.6rem, 5vw, 3.8rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin-bottom: 1.2rem;
+    }
+
+    .article-lead {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        max-width: 620px;
+        margin: 0 auto;
+    }
+
+    .time-ago {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 3.5rem;
+    }
+
+    .article-body {
+        font-size: 1.08rem;
+    }
+
+    .article-body p {
+        margin-bottom: 1.9rem;
+        
+    }
+
+    .article-body h2 {
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-top: 4rem;
+        margin-bottom: 1.2rem;
+        position: relative;
+        padding-left: 14px;
+    }
+
+    .article-body h2::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 4px;
+        height: calc(100% - 12px);
+        border-radius: 10px;
+        background: var(--accent-color);
+        opacity: .9;
+    }
+
+    /* ===== FOOTER ===== */
+
+    .article-footer {
+        margin-top: 5rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .tags {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .tag {
+        padding: 7px 16px;
+        background: var(--code-bg);
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        color: var(--text-secondary);
+    }
+    .time-ago {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0 auto 3.5rem;
+    padding: 10px 18px;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+
+    color: var(--text-secondary);
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.6),
+        rgba(255,255,255,0.3)
+    );
+
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+
+    width: fit-content;
+    user-select: none;
+
+    backdrop-filter: blur(6px);
+}
+
+/* Modo escuro ajustado */
+body.dark-mode .time-ago {
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.02)
+    );
+}
+
+.time-ago i {
+    font-size: 1rem;
+    opacity: 0.85;
+}
+
+.time-ago .time-text {
+    color: inherit;
+}
+
+/* interação super sutil */
+.time-ago:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">Revisão</div>
+
+        <div class="nav-menu">
+            <a href="index.html">Início</a>
+            <a href="materias.html">Conteúdos</a>
+            <a href="anotações.html">Anotações</a>
+            <a href="configuracoes.html">Configurações</a>
+        </div>
+
+        <div class="controls">
+            <div class="notification-wrapper">
+                <button class="theme-btn" id="notif-btn">
+                    <i class="ph ph-bell"></i>
+                    <span class="notif-badge" id="notif-counter">0</span>
+                </button>
+
+                <div class="notif-dropdown" id="notif-dropdown">
+                    <div class="notif-header">Notificações</div>
+                    <div class="notif-list" id="notif-list"></div>
+                </div>
+            </div>
+
+            <button class="theme-btn" id="theme-toggle">
+                <i class="ph ph-moon"></i>
+            </button>
+
+            <button class="hamburger" id="hamburger">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<main class="article-container">
+
+    <div class="article-header">
+        <h1 class="article-title">Detalhes da nova versão do Revisão</h1>
+        <p class="article-lead">
+            Veja com detalhes tudo o que mudou e os novos recursos disponíveis na plataforma.
+        </p>
+        <br>
+        <span class="time-ago" data-time="2026-01-07T00:37:00">
+  <i class="ph ph-clock"></i>
+  <span class="time-text">Calculando...</span>
+</span>
+    </div>
+
+  <article class="article-body">
+
+    <h2>Nova interface e ícones</h2>
+    <p>
+        O Revisão recebeu uma interface totalmente renovada, pensada para ser mais moderna, limpa e organizada.
+        Cada elemento foi reposicionado para facilitar o uso no dia a dia, deixando tudo mais intuitivo.
+        Os novos ícones ajudam o usuário a identificar rapidamente cada função da plataforma, reduzindo
+        confusões e tornando a navegação muito mais prática, tanto no computador quanto no celular.
+    </p>
+
+    <h2>Fonte e experiência de leitura</h2>
+    <p>
+        A tipografia Plus Jakarta Sans foi escolhida para oferecer uma leitura confortável e fluida.
+        Ela possui ótimo espaçamento, formas suaves e excelente legibilidade, o que ajuda a reduzir o cansaço
+        visual durante longos períodos de estudo. Além disso, a fonte reforça o visual moderno e profissional
+        da plataforma.
+    </p>
+
+    <h2>Tema claro e tema escuro</h2>
+    <p>
+        O usuário pode alternar facilmente entre o tema claro e o tema escuro com apenas um clique.
+        Essa função permite adaptar a interface ao ambiente, seja durante o dia ou à noite.
+        A escolha do tema é salva automaticamente, garantindo que a plataforma sempre abra com a
+        aparência preferida do usuário.
+    </p>
+
+    <h2>Sistema de anotações</h2>
+    <p>
+        O sistema de anotações foi desenvolvido para oferecer liberdade total na organização dos estudos.
+        O usuário pode criar blocos de notas personalizados, escrever conteúdos importantes e formatar
+        o texto de maneira simples e eficiente.
+    </p>
+
+    <p>
+        Dentro das anotações, estão disponíveis diversas ferramentas que facilitam a escrita e edição:
+    </p>
+
+    <ul>
+        <li>
+            <strong>Voltar e refazer:</strong> permite desfazer uma ação feita por engano ou refazer algo que foi
+            desfeito, garantindo mais controle durante a edição.
+        </li>
+
+        <li>
+            <strong>H1 e H2:</strong> usados para criar títulos e subtítulos. O H1 serve para títulos principais,
+            enquanto o H2 é ideal para dividir o conteúdo em seções menores.
+        </li>
+
+        <li>
+        <i class="ph ph-text-b"></i>
+            <strong>(Negrito):</strong> destaca palavras ou frases importantes, chamando a atenção para pontos-chave.
+        </li>
+
+        <li>
+        <i class="ph ph-text-italic"></i>
+            <strong>(Itálico):</strong> utilizado para dar ênfase leve ao texto, muito útil para observações ou termos.
+        </li>
+
+        <li>
+         <i class="ph ph-text-underline"></i>
+            <strong>(Sublinhado):</strong> ajuda a destacar informações específicas dentro do conteúdo.
+        </li>
+
+        <li>
+          <i class="ph ph-text-strikethrough"></i>
+            <strong> (Riscado):</strong> permite riscar textos que não são mais relevantes, sem precisar apagá-los.
+        </li>
+
+        <li>
+           <i class="ph ph-text-align-left"></i>
+    </button>
+    
+        <i class="ph ph-text-align-center"></i>
+               <i class="ph ph-text-align-right"></i>
+            <strong>Alinhamento de texto:</strong> possibilita escolher entre alinhamento padrão,
+            centralizado ou à direita, deixando o conteúdo mais organizado visualmente.
+        </li>
+
+        <li>
+        <i class="ph ph-list-bullets"></i>
+        <i class="ph ph-list-numbers"></i>
+            <strong>Lista e lista numerada:</strong> ideais para organizar tópicos, passos ou conteúdos em ordem,
+            facilitando a leitura e compreensão.
+        </li>
+
+        <li>
+        <i class="ph ph-eraser"></i>
+            <strong>Borracha:</strong> remove rapidamente a formatação do texto, deixando-o limpo novamente.
+        </li>
+    </ul>
+
+  
+
+    <ul>
+        <li>
+        <i class="ph ph-palette"></i>
+            <strong>Botão de mudar o tema do bloco:</strong> permite escolher um tema visual específico para cada
+            bloco de notas, ajudando na organização por matérias ou assuntos.
+        </li>
+
+        <li>
+        <i class="ph ph-download-simple"></i>
+            <strong>Baixar anotações:</strong> possibilita salvar as anotações no dispositivo, garantindo acesso
+            offline ou backup do conteúdo.
+        </li>
+
+        <li>
+        <i class="ph ph-trash"></i>
+            <strong>Apagar anotações:</strong> remove completamente um bloco de notas quando ele não for mais necessário.
+        </li>
+    </ul>
+
+<h2>Configurações</h2>
+<p>
+  A área de configurações foi aprimorada para oferecer mais controle ao usuário.
+  Aqui você pode ajustar preferências visuais, sons, comportamento da plataforma
+  e outros recursos importantes de forma simples, clara e intuitiva.
+</p>
+
+<h3>Aparência</h3>
+<p>
+  <strong>Tamanho da fonte:</strong> Permite alterar o tamanho do texto da interface conforme sua preferência.
+</p>
+<p>
+  <strong>Compacta:</strong> Exibe a fonte em um tamanho menor, ideal para quem prefere uma visualização mais condensada.<br>
+  <strong>Padrão:</strong> Restaura o tamanho padrão da fonte do sistema.<br>
+  <strong>Ampliada:</strong> Aumenta o tamanho da fonte, facilitando a leitura e a visualização do conteúdo.
+</p>
+
+<p>
+  <strong>Reduzir animações:</strong> Remove animações e transições da página, tornando a interface mais rápida.
+  Essa opção pode limitar alguns efeitos visuais, mas melhora o desempenho.
+</p>
+
+<h3>Foco & Produtividade</h3>
+<p>
+  <strong>Modo Zen:</strong> Oculta informações estatísticas como tempo de uso e número de sessões,
+  ajudando a reduzir ansiedade e manter o foco.
+</p>
+<p>
+  <strong>Sons do sistema:</strong> Permite ativar ou desativar os sons da plataforma,
+  como áudios, vídeos e efeitos sonoros internos.
+</p>
+
+<h3>Dados & Privacidade</h3>
+<p>
+  <strong>Exportar dados:</strong> Permite baixar informações como horários de acesso,
+  dias de uso e tempo total na plataforma em formato JSON.
+</p>
+<p>
+  <strong>Resetar tudo:</strong> Apaga todos os dados salvos localmente no navegador,
+  incluindo histórico de uso e desempenho na plataforma.
+</p>
+
+<h3>Seu desempenho</h3>
+<p>
+  Essa funcionalidade permite visualizar com precisão o tempo total de uso da plataforma
+  e o número de sessões realizadas. Todos os dados são armazenados localmente no navegador.
+  Caso sejam apagados ou perdidos, não será possível recuperar as informações anteriores.
+</p>
+
+
+    <h2>Dados do usuário e acessibilidade</h2>
+    <p>
+        O Revisão agora gerencia melhor os dados do usuário, como tempo de uso, preferências e histórico.
+        Essas informações ajudam a oferecer uma experiência mais personalizada.
+        Também foram implementadas melhorias de acessibilidade, tornando a plataforma mais inclusiva e confortável
+        para todos os usuários.
+    </p>
+
+    <h2>Sistema de notificações</h2>
+    <p>
+        O novo sistema de notificações mantém o usuário sempre informado sobre atualizações,
+        avisos importantes e novidades da plataforma.
+        Tudo é exibido de forma organizada e discreta, sem atrapalhar o foco nos estudos.
+    </p>
+
+    <h2>Interface mais dinâmica</h2>
+    <p>
+        A plataforma conta com animações suaves e transições naturais que deixam a navegação mais fluida.
+        Esses detalhes tornam a experiência mais agradável, moderna e responsiva, sem comprometer o desempenho.
+    </p>
+
+</article>
+    </article>
+
+    <footer class="article-footer">
+    <p> Versão 5.0</p>
+    <br>
+        <div class="tags">
+            <span class="tag">Atualização</span>
+            <span class="tag">Interface</span>
+            <span class="tag">Novidades</span>
+        </div>
+    </footer>
+
+</main>
+
+<script src="scripts.js"></script>
+
+<script>
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = themeBtn.querySelector('i');
+
+    function setDarkMode(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.replace('ph-moon', 'ph-sun');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeIcon.classList.replace('ph-sun', 'ph-moon');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+        setDarkMode(true);
+    }
+
+    themeBtn.addEventListener('click', () => {
+        setDarkMode(!document.body.classList.contains('dark-mode'));
+    });
+</script>
+
+</body>
+</html>

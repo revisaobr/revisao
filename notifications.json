@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "notifications": [
+    {
+      "id": "1",
+      "titulo": "Bem-vindo à nova versão do aplicativo Revisão, em breve vamos trazer conteúdos pra você",
+      "tempo": "06/01/2026",
+      "icone": "ph-rocket-launch",
+      "link": "index.html"
+    }
+  ]
+}

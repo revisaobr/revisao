@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const notifBtn = document.getElementById('notif-btn');
     const notifDropdown = document.getElementById('notif-dropdown');
     const notifList = document.getElementById('notif-list');
@@ -6,36 +6,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!notifBtn || !notifDropdown || !notifList || !notifCounter) return;
 
-    // 🔁 CONTROLE GLOBAL
-    const NOTIF_VERSION = 1; // ← MUDE ISSO quando quiser que apareça de novo
-    const LAST_SEEN = Number(sessionStorage.getItem('notifVersion')) || 0;
+    const STORAGE_KEY = 'seenNotifications';
 
-    // ===== NOTIFICAÇÕES =====
-    const notifications = [
-    {
-        titulo: "Feliz ano novo, aproveite o ano de 2026 muitas felicidades a todos!",
-        tempo: "03/01/2026",
-        icone: "ph-beer-bottle",
-        link: "index.html"
+    let data;
+
+    try {
+        const response = await fetch('notifications.json');
+        data = await response.json();
+    } catch (err) {
+        console.error('Erro ao carregar notificações:', err);
+        return;
     }
-];
+
+    const notifications = data.notifications;
+
+    // Notificações já vistas
+    let seen = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
     function renderNotifications() {
         notifList.innerHTML = '';
 
-        // Se já viu essa versão, não mostra nada
-        if (LAST_SEEN >= NOTIF_VERSION) {
+        const unread = notifications.filter(n => !seen.includes(n.id));
+
+        // Contador
+        if (unread.length === 0) {
             notifCounter.style.display = 'none';
             notifList.innerHTML =
-                '<div class="notif-empty">Nenhuma notificação nova</div>';
+                '<div class="notif-empty">Sem notificações</div>';
             return;
         }
 
-        notifCounter.innerText = notifications.length;
+        notifCounter.textContent = unread.length;
         notifCounter.style.display = 'flex';
 
-        notifications.forEach(item => {
-            const el = document.createElement(item.link !== 'none' ? 'a' : 'div');
-            if (item.link !== 'none') el.href = item.link;
+        unread.forEach(item => {
+            const el = document.createElement(
+                item.link && item.link !== 'none' ? 'a' : 'div'
+            );
+
+            if (item.link && item.link !== 'none') {
+                el.href = item.link;
+            }
 
             el.className = 'notif-item';
             el.innerHTML = `
@@ -47,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             el.addEventListener('click', () => {
-                sessionStorage.setItem('notifVersion', NOTIF_VERSION);
+                if (!seen.includes(item.id)) {
+                    seen.push(item.id);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(seen));
+                }
                 renderNotifications();
             });
 
