@@ -2,371 +2,498 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horários</title>
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="conf.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-        <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lures Scripts | Hub Oficial</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="notificacoes.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-              /* --- CONFIGURAÇÕES DE VARIÁVEIS --- */
         :root {
-            --fonte-site: 'Plus Jakarta Sans', sans-serif;
-            --fonte-tabela: 'Poppins', sans-serif;
-            --bg-site: #f4f6f8;
-            --texto-site: #111827;
-            --bg-menu: rgba(255, 255, 255, 0.95);
-            --borda-menu: #e5e7eb;
-            --botao-bg: #111827;
-            --botao-texto: #ffffff;
+            /* Paleta de Cores Moderna */
+            --bg-color: #050505;
+            --bg-gradient: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #050505 60%);
+            
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-hover-bg: rgba(255, 255, 255, 0.06);
+            --card-hover-border: rgba(255, 255, 255, 0.2);
+
+            --accent: #7c4dff; /* Roxo Neon */
+            --accent-glow: rgba(124, 77, 255, 0.4);
+            
+            --success: #00e676; /* Verde Neon */
+            --success-glow: rgba(0, 230, 118, 0.15);
+
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+
+            --radius: 16px;
         }
 
-        body.dark-mode {
-            --bg-site: #121212;
-            --texto-site: #ffffff;
-            --bg-menu: rgba(18, 18, 18, 0.95);
-            --borda-menu: #333333;
-            --botao-bg: #ffffff;
-            --botao-texto: #000000;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
-        /* --- ESTILOS GERAIS --- */
         body {
-            font-family: var(--fonte-site);
-            background-color: var(--bg-site);
-            color: var(--texto-site);
-            margin: 0;
-            padding-bottom: 50px;
-            transition: background-color 0.3s, color 0.3s;
-            overflow-x: hidden; /* Evita rolagem lateral na página inteira */
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-color);
+            background-image: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
         }
 
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 60px 24px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
 
-        /* --- CONTAINER PRINCIPAL --- */
-        .wrapper-conteudo {
+        /* --- HEADER --- */
+        .header {
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            width: 100%;
-            box-sizing: border-box;
-            /* Importante para o cálculo de altura no mobile */
-            position: relative; 
         }
 
-        .btn-salvar {
-            margin-bottom: 20px;
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: 600;
-            border: none;
-            border-radius: 8px;
-            background: var(--botao-bg);
-            color: var(--botao-texto);
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        .avatar-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .profile-img {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--card-border);
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-wrapper:hover .profile-img {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            z-index: 10; /* Garante que o botão fique clicável */
-        }
-
-        /* --- ÁREA DA TABELA --- */
-        #area-para-download {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            /* Removemos width: 100% daqui para controlar via JS/CSS fixo */
-            width: 1050px; /* Largura FIXA original para manter o layout */
-            box-sizing: border-box;
-            color: #2c3e50;
-            transform-origin: top center; /* Para o zoom acontecer a partir do topo */
-        }
-
-        .titulo-principal {
-            text-align: center;
-            margin-bottom: 25px;
-            font-family: var(--fonte-tabela);
-        }
-        .titulo-principal h1 { margin: 0; font-size: 32px; font-weight: 700; color: #2c3e50; }
-        .titulo-principal span { display: block; margin-top: 6px; font-size: 15px; color: #6c7a89; }
-
-        .tabela-container-scroll {
-            width: 100%;
-            /* Removemos o overflow-x: auto para não ter scrollbar, vamos usar scale */
-        }
-
-        table {
-            width:100%; 
-            border-collapse: separate;
-            border-spacing: 0;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            font-family: var(--fonte-tabela);
-        }
-
-        th, td { padding: 16px; text-align: center; font-size: 15px; border-bottom: 1px solid #dcdcdc; }
-        th { background-color: #5d9cec; color: white; font-weight: 600; border-bottom: 2px solid #3b7dd8; }
-
-        .celula-tempo {
-            font-weight: 600;
-            background-color: #f1f5fb;
-            color: #2c3e50;
-            text-align: left;
+            justify-content: center;
             font-size: 14px;
-            width: 160px;
-            border-right: 1px solid #dcdcdc;
+            border: 3px solid var(--bg-color);
         }
 
-        td:not(.celula-tempo) { border-right: 1px solid #eaeaea; }
-        tr:last-child td { border-bottom: none; }
-        tr:nth-child(even) td:not(.celula-tempo) { background-color: #fafbfc; }
-
-        .linha-recreio {
-            background-color: #fff4d6;
-            font-style: italic;
-            font-weight: 500;
-            color: #6c5a1a;
+        .brand-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            background: linear-gradient(to right, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .linha-recreio td { padding: 20px 0; font-size: 16px; }
 
-        /* Ajustes Mobile */
-        @media (max-width: 768px) {
-            .menu-links { display: none; }
-            .wrapper-conteudo { padding: 10px 0; overflow: hidden; }
-            
-            /* O segredo: forçamos a tabela a não quebrar linha, mas vamos reduzi-la via JS */
-            .titulo-principal h1 { font-size: 32px; } /* Mantém grande no original */
+        .brand-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 400;
         }
+
+        /* --- SEPARADOR --- */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+            width: 100%;
+            margin: -10px 0;
+        }
+
+        /* --- SEÇÕES --- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+
+        .section-icon {
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* --- CARDS MODERNOS --- */
+        .grid-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            /* Garante que o conteúdo não quebre com botões extras */
+            justify-content: space-between; 
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card:hover {
+            background: var(--card-hover-bg);
+            border-color: var(--card-hover-border);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5);
+        }
+
+        .card-content-left {
+            display: flex;
+            align-items: center;
+            flex: 1; /* Ocupa o espaço restante */
+            overflow: hidden; /* Evita que texto empurre os botões */
+        }
+
+        .card-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #111;
+            flex-shrink: 0;
+        }
+
+        .round-img {
+            border-radius: 50%;
+        }
+
+        .card-info {
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+            overflow: hidden; 
+        }
+
+        .info-title {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .info-sub {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px; /* Espaço para a versão */
+        }
+
+        /* --- O NEGÓCIO VERDE (Versão) --- */
+        .version-tag {
+            display: inline-flex;
+            align-items: center;
+            background: var(--success-glow);
+            color: var(--success);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            align-self: flex-start;
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--success);
+        }
+
+        /* --- WRAPPER PARA BOTÕES (Copiar + Download) --- */
+        .actions-wrapper {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0; /* Impede que os botões encolham */
+        }
+
+        .card-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        /* Cores específicas para ações */
+        .btn-download:hover {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- BOTÕES SOCIAIS --- */
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .social-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .social-btn:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        .discord-btn:hover { background: #5865F2; color: white; border-color: #5865F2; }
+        .youtube-btn:hover { background: #FF0000; color: white; border-color: #FF0000; }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #444;
+            font-size: 0.8rem;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
     </style>
 </head>
 <body>
 
-<header>
-    <nav>
-        <div class="logo">Revisão</div>
+    <div class="container">
         
-        <div class="nav-menu">
-            <a href="index.html" style="color: blue;">Início</a>
-            <a href="materias.html">Conteúdos</a>
-            <a href="anotações.html">Anotações</a>
-            <a href="configuracoes.html">Configurações</a>
-        </div>
+        <header class="header">
+            <div class="avatar-wrapper">
+                <img src="https://i.imgur.com/6Xqg8gA.png" alt="Profile" class="profile-img">
+                <div class="verified-badge"><i class="fa-solid fa-check"></i></div>
+            </div>
+            <h1 class="brand-name">Lures Scripts</h1>
+            <p class="brand-desc">Automação e Performance de Elite.</p>
+        </header>
 
-        <div class="controls">
-            <div class="notification-wrapper">
-                <button class="theme-btn" id="notif-btn">
-                    <i class="ph ph-bell"></i>
-                    <span class="notif-badge" id="notif-counter">0</span>
-                </button>
-                
-                <div class="notif-dropdown" id="notif-dropdown">
-                    <div class="notif-header">Notificações</div>
-                    <div class="notif-list" id="notif-list">
+        <div class="divider"></div>
+
+        <section>
+            <div class="section-header">
+                <i class="fa-solid fa-mobile-screen section-icon"></i>
+                <span class="section-title">Executores Mobile</span>
+            </div>
+            
+            <div class="grid-list">
+                <div class="card">
+                    <div class="card-content-left">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqgrCsX8VV0xLL6-S1-UimDK4atakGGgoh04KeraNNYw&s=10" class="card-img" alt="Delta">
+                        <div class="card-info">
+                            <span class="info-title">Delta Mobile</span>
+                            <span class="info-sub"><div class="status-dot"></div> Atualizado</span>
+                            <div class="version-tag">v2.640</div>
                         </div>
+                    </div>
+                    <div class="actions-wrapper">
+                        <a href="#" class="card-btn btn-download"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content-left">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNlWIdhBqySDpIBBVYdka1OY7GZnXwMmN7YmW0RkX8I7R2G2tQRz3A5X2T&s=10" class="card-img" alt="Fluxus">
+                        <div class="card-info">
+                            <span class="info-title">Fluxus V2</span>
+                            <span class="info-sub">Key System Rápido</span>
+                            <div class="version-tag">v32.0</div>
+                        </div>
+                    </div>
+                    <div class="actions-wrapper">
+                        <a href="#" class="card-btn btn-download"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content-left">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/05/e2/05/05e20551-4089-0941-8637-296420f5c163/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/512x512bb.jpg" class="card-img" alt="Codex">
+                        <div class="card-info">
+                            <span class="info-title">Codex iOS</span>
+                            <span class="info-sub">No-Jailbreak</span>
+                            <div class="version-tag">v2.1.0</div>
+                        </div>
+                    </div>
+                    <div class="actions-wrapper">
+                        <a href="#" class="card-btn btn-download"><i class="fa-solid fa-download"></i></a>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <button class="theme-btn" id="theme-toggle"><i class="ph ph-moon"></i></button>
-            <button class="hamburger" id="hamburger"><i class="ph ph-list"></i></button>
-        </div>
-    </nav>
-</header>
-<br>
-<br>
-<br>
-<div class="wrapper-conteudo">
+        <section>
+            <div class="section-header">
+                <i class="fa-solid fa-code section-icon"></i>
+                <span class="section-title">Hubs Premium</span>
+            </div>
 
+            <div class="grid-list">
+                <div class="card">
+                    <div class="card-content-left">
+                        <img src="https://tr.rbxcdn.com/152012c8521a0e88229c1598f804593f/150/150/Image/Jpeg" class="card-img round-img" alt="Blox Fruits">
+                        <div class="card-info">
+                            <span class="info-title">Blox Fruits Auto</span>
+                            <span class="info-sub">Farm, Raids & PVP</span>
+                            <div class="version-tag">v1.5 Final</div>
+                        </div>
+                    </div>
+                    <div class="actions-wrapper">
+                        <div class="card-btn btn-copy" title="Copiar Script">
+                            <i class="fa-regular fa-copy"></i>
+                        </div>
+                        <a href="#" class="card-btn btn-download" title="Baixar Arquivo">
+                            <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
+                </div>
 
+                <div class="card">
+                    <div class="card-content-left">
+                        <img src="https://i.imgur.com/6Xqg8gA.png" class="card-img round-img" alt="Lures Hub">
+                        <div class="card-info">
+                            <span class="info-title">Lures Hub Main</span>
+                            <span class="info-sub">Universal Script</span>
+                            <div class="version-tag">v4.0 Beta</div>
+                        </div>
+                    </div>
+                    <div class="actions-wrapper">
+                        <div class="card-btn btn-copy">
+                            <i class="fa-regular fa-copy"></i>
+                        </div>
+                        <a href="#" class="card-btn btn-download">
+                            <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <div id="area-para-download">
-        <div class="titulo-principal">
-            <h1>Turma 105</h1>
-            <span>Horário das Aulas</span>
-        </div>
+        <section>
+            <div class="section-header">
+                <i class="fa-solid fa-users section-icon"></i>
+                <span class="section-title">Comunidade</span>
+            </div>
+            <div class="social-grid">
+                <a href="#" class="social-btn discord-btn">
+                    <i class="fa-brands fa-discord"></i>
+                    Discord
+                </a>
+                <a href="#" class="social-btn youtube-btn">
+                    <i class="fa-brands fa-youtube"></i>
+                    YouTube
+                </a>
+            </div>
+        </section>
 
-        <div class="tabela-container-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Horário</th>
-                        <th>Segunda-feira</th>
-                        <th>Terça-feira</th>
-                        <th>Quarta-feira</th>
-                        <th>Quinta-feira</th>
-                        <th>Sexta-feira</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="celula-tempo">1ª aula<br>13:30</td>
-                        <td>Matemática/Matheus</td>
-                        <td>Matemática/Matheus</td>
-                        <td>Projeto Integrador/Andressa Martins</td>
-                        <td>Literatura/Juliana Silva</td>
-                        <td>Redação/ Juliana Silva</td>
-                    </tr>
-                    <tr>
-                        <td class="celula-tempo">2ª aula<br>14:20</td>
-                        <td>Biologia/Adriana</td>
-                        <td>Educação Financeira/Andressa Martins</td>
-                        <td>Filosofia/Márcio</td>
-                        <td>Química/Jaque</td>
-                        <td>Redação/Juliana Silva</td>
-                    </tr>
-                    <tr>
-                        <td class="celula-tempo">3ª aula<br>15:10</td>
-                        <td>Geografia/Vanessa</td>
-                        <td>Escrita Criativa/Juliana Silva</td>
-                        <td>Sociologia/Márcio</td>
-                        <td>História/Felipe</td>
-                        <td>Biologia/Adriana</td>
-                    </tr>
-                    <tr class="linha-recreio">
-                        <td colspan="6">15:50 - RECREIO</td>
-                    </tr>
-                    <tr>
-                        <td class="celula-tempo">4ª aula<br>16:05</td>
-                        <td>Física/Pedro</td>
-                        <td>Física/Pedro</td>
-                        <td>Matemática/Matheus</td>
-                        <td>Química/Jaque</td>
-                        <td>Matemática Aprofundada/Simone</td>
-                    </tr>
-                    <tr>
-                        <td class="celula-tempo">5ª aula<br>16:50</td>
-                        <td>Matemática Aprofundada/Simone</td>
-                        <td>Artes/Max</td>
-                        <td>História/Felipe</td>
-                        <td>Português/Ariadne</td>
-                        <td>Projeto Integrador/Andressa Martins</td>
-                    </tr>
-                    <tr>
-                        <td class="celula-tempo">6ª aula<br>17:40 - 18:30</td>
-                        <td>Português/Ariadne</td>
-                        <td>Inglês/Giovana</td>
-                        <td>Espanhol/Jorge</td>
-                        <td>Português/Ariadne</td>
-                        <td>Educação Física/ Adriana Moreira</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <footer>
+            © 2024 Lures Dev Team. All rights reserved.
+        </footer>
+
     </div>
-    <br>
-    <br>
-        <button class="btn-salvar" onclick="baixarImagem()">
-        <i class="ph ph-download-simple"></i> Baixar Tabela
-    </button>
-</div>
 
-
-    <script src="scripts.js"></script>
     <script>
-          // --- LÓGICA DE ESCALA PARA MOBILE ---
-    function ajustarTabelaMobile() {
-        const tabela = document.getElementById('area-para-download');
-        const wrapper = document.querySelector('.wrapper-conteudo');
+        // Script para fazer o botão de copiar funcionar
+        const copyButtons = document.querySelectorAll('.btn-copy');
         
-        // A largura original que a tabela PRECISA ter para ficar bonita
-        const larguraOriginalTabela = 1050; 
-        
-        // A largura atual da tela do usuário
-        const larguraTela = window.innerWidth;
-
-        if (larguraTela < larguraOriginalTabela) {
-            // Calcula a proporção (Scale)
-            // Subtraímos 20px para deixar uma margem de segurança nas laterais
-            const escala = (larguraTela - 20) / larguraOriginalTabela;
-            
-            // Aplica o zoom via CSS Transform
-            tabela.style.transform = `scale(${escala})`;
-            
-            // Como o 'scale' diminui visualmente mas mantém o espaço físico original no DOM,
-            // precisamos ajustar a altura do container pai para não ficar um buraco enorme embaixo.
-            const alturaOriginal = tabela.getBoundingClientRect().height; 
-            // Altura Ajustada = Altura Atual * escala (mas o getBoundingClientRect já pega transformado em alguns browsers, 
-            // então usamos scrollHeight para garantir a altura "real" sem zoom e multiplicamos).
-            
-            // Método mais simples para corrigir o espaço em branco:
-            // Margem negativa inferior baseada na redução
-            const alturaReal = tabela.scrollHeight;
-            const espacoSobrando = alturaReal - (alturaReal * escala);
-            tabela.style.marginBottom = `-${espacoSobrando}px`;
-            
-        } else {
-            // Reset para Desktop
-            tabela.style.transform = 'none';
-            tabela.style.marginBottom = '0';
-        }
-    }
-
-    // Executa ao carregar e ao redimensionar a tela
-    window.addEventListener('load', ajustarTabelaMobile);
-    window.addEventListener('resize', ajustarTabelaMobile);
-
-    // --- FUNÇÕES ORIGINAIS ---
-    function alternarTema() {
-        document.body.classList.toggle('dark-mode');
-        const icone = document.querySelector('.botao-tema i');
-        if (document.body.classList.contains('dark-mode')) {
-            icone.classList.replace('ph-moon', 'ph-sun');
-        } else {
-            icone.classList.replace('ph-sun', 'ph-moon');
-        }
-    }
-
-    function baixarImagem() {
-        const elemento = document.getElementById("area-para-download");
-        const btn = document.querySelector('.btn-salvar');
-        
-        // Guarda estilo atual para restaurar depois (caso o scale interfira no print)
-        const transformAnterior = elemento.style.transform;
-        const marginAnterior = elemento.style.marginBottom;
-
-        // Reseta o scale momentaneamente para o print sair em alta resolução (tamanho original)
-        // Se deixarmos o scale, a imagem sai pequena e pixelada.
-        elemento.style.transform = 'none';
-        elemento.style.marginBottom = '0';
-
-        // Feedback visual
-        const textoAntigo = btn.innerHTML;
-        btn.innerHTML = "Gerando...";
-
-        // Pequeno delay para o navegador renderizar o reset de estilo
-        setTimeout(() => {
-            html2canvas(elemento, {
-                scale: 2, 
-                useCORS: true,
-                backgroundColor: "#ffffff",
-                width: 1050, // Força a largura total no canvas
-                windowWidth: 1050 // Simula uma janela desktop pro print
-            }).then(canvas => {
-                const link = document.createElement("a");
-                link.download = "horario-turma-105.png";
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                btn.innerHTML = textoAntigo;
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
                 
-                // Restaura o visual mobile
-                elemento.style.transform = transformAnterior;
-                elemento.style.marginBottom = marginAnterior;
+                // Aqui você colocaria a lógica de navigator.clipboard.writeText(...)
+                // Exemplo visual:
+                icon.className = 'fa-solid fa-check';
+                this.style.borderColor = '#00e676';
+                this.style.color = '#00e676';
+
+                setTimeout(() => {
+                    icon.className = 'fa-regular fa-copy';
+                    this.style.borderColor = 'transparent';
+                    this.style.color = ''; // volta a cor original do CSS
+                }, 2000);
             });
-        }, 100);
-    }
+        });
     </script>
 </body>
 </html>

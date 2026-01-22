@@ -810,3 +810,27 @@ body.dark-mode .badge:hover {
 
 /* ... Mantenha o restante do CSS ... */
 
+.btn-config {
+    /* Layout e Espaçamento */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espaço entre ícone e texto */
+    padding: 5px;
+    text-decoration: none;
+    
+    /* Tipografia */
+    font-family: var(--font-main);
+    font-weight: 500;
+    font-size: 1.1rem;
+    
+    /* Cores do Tema */
+    
+    
+    /* Bordas e Formato */
+    
+    
+    /* Transições Suaves */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
