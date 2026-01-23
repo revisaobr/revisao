@@ -205,6 +205,93 @@ body.dark-mode .time-ago {
     color: var(--text-primary);
     border-color: var(--accent-color);
 }
+/* Container Principal */
+.audio-player {
+    /* Layout */
+    display: block; /* Remove espaços fantasmas de elements inline */
+    width: 100%;
+    max-width: 420px;
+    height: 54px; /* Altura consistente */
+    
+    /* Aparência */
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: var(--radius-md, 12px); /* Arredondamento mais suave */
+    box-shadow: var(--shadow-card, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+    
+    /* Espaçamento */
+    padding: 0; /* Remove padding do container para controle total */
+    outline: none;
+    
+    /* MÁGICA MODERNA: Define a cor principal da barra e inputs */
+    accent-color: var(--accent-color, #3b82f6); 
+    
+    /* MÁGICA MODERNA 2: Adapta os ícones nativos (play/volume) */
+    color-scheme: light; 
+    transition: all 0.2s ease;
+}
+
+/* Painel de Controles (A faixa cinza nativa) */
+.audio-player::-webkit-media-controls-panel {
+    background-color: transparent; /* Deixa a cor do container aparecer */
+    padding: 0 12px; /* Espaçamento interno real */
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Remove a borda/fundo 'enclosure' nativo do Chrome */
+.audio-player::-webkit-media-controls-enclosure {
+    border-radius: 0;
+    background: none;
+}
+
+/* --- Timeline (Barra de Progresso) --- */
+
+/* O fundo da barra (parte não tocada) */
+.audio-player::-webkit-media-controls-timeline-container {
+   padding-top: 0; /* Centraliza melhor */
+}
+
+/* Texto de Tempo (Corrente e Restante) */
+.audio-player::-webkit-media-controls-current-time-display,
+.audio-player::-webkit-media-controls-time-remaining-display {
+    color: var(--text-meta, #6b7280);
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    text-shadow: none;
+}
+
+/* Ícone de Play e Mute */
+.audio-player::-webkit-media-controls-play-button,
+.audio-player::-webkit-media-controls-mute-button {
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.audio-player::-webkit-media-controls-play-button:hover,
+.audio-player::-webkit-media-controls-mute-button:hover {
+    opacity: 1;
+}
+
+/* --- DARK MODE --- */
+body.dark-mode .audio-player {
+    background: var(--card-bg-dark, #18181b);
+    border-color: var(--border-color-dark, #27272a);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    
+    /* Inverte os ícones nativos corretamente para branco */
+    color-scheme: dark; 
+}
+
+/* Ajuste fino da cor do texto no Dark Mode */
+body.dark-mode .audio-player::-webkit-media-controls-current-time-display,
+body.dark-mode .audio-player::-webkit-media-controls-time-remaining-display {
+    color: #a1a1aa;
+}
+
 </style>
 </head>
 
@@ -261,7 +348,13 @@ body.dark-mode .time-ago {
   <span class="time-text">Calculando...</span>
 </span>
     </div>
-
+<audio
+  class="audio-player"
+  controls
+  controlsList="nodownload noplaybackrate nofullscreen"
+>
+    <source src="novaatualizacao-5.0.mp3" type="audio/mpeg">
+</audio>
   <article class="article-body">
 
     <h2>Nova interface e ícones</h2>

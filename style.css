@@ -834,3 +834,17 @@ body.dark-mode .badge:hover {
     transition: all 0.3s ease;
     cursor: pointer;
 }
+.tempo-leitura {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    
+    
+    padding: 3px 3px;
+    border-radius: 8px;
+  }
+
+  .tempo-leitura .material-icons {
+    font-size: 18px;
