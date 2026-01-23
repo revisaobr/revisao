@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central de Conteúdo</title>
+    <meta name="description" content="Selecione a matéria que deseja revisar hoje e acesse os conteúdos completos">
+    <title>Central de Matérias</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,8 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="conf.js"></script>
     <link rel="stylesheet" href="style.css">
-  <script src="notificacoes.js"></script>
-   <style>
+    <script src="notificacoes.js"></script>
+   
+<style>
 :root {
     --font-main: 'Plus Jakarta Sans', sans-serif;
     /* Light Mode */
@@ -27,7 +29,6 @@
     --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
     --radius-lg: 24px;
     --radius-sm: 12px;
-    --modal-bg: #ffffff;
 }
 
 /* Dark Mode */
@@ -39,7 +40,6 @@ body.dark-mode {
     --accent-color: #3b82f6;
     --border-color: #27272a;
     --btn-text: #ffffff;
-    --modal-bg: #111111;
     --shadow-card: 0 0 0 1px #27272a;
 }
 
@@ -49,32 +49,12 @@ body { background-color: var(--bg-color); color: var(--text-primary); font-famil
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 
-/* OBS: O CSS do HEADER foi removido daqui conforme solicitado, 
-   pois ele será carregado do seu arquivo 'style.css'.
-*/
-
-/* --- HERO & FILTROS (MANTIDO) --- */
-.hero { margin-top: 140px; text-align: center; padding: 0 5%; margin-bottom: 40px; }
+/* --- HERO --- */
+.hero { margin-top: 140px; text-align: center; padding: 0 5%; margin-bottom: 60px; }
 .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; line-height: 1.1; }
-.hero p { color: var(--text-secondary); max-width: 500px; margin: 0 auto; font-size: 1.1rem; }
+.hero p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
 
-.topic-nav {
-    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
-    max-width: 850px; margin: 0 auto 50px auto; padding: 0 5%;
-}
-
-.topic-btn {
-    padding: 10px 24px; border-radius: 100px; font-size: 0.9rem; font-weight: 600;
-    background: var(--card-bg); border: 1px solid var(--border-color);
-    color: var(--text-secondary); transition: all 0.2s ease;
-}
-.topic-btn:hover { border-color: var(--accent-color); color: var(--text-primary); transform: translateY(-2px); }
-.topic-btn.active {
-    background: var(--accent-color); color: var(--btn-text);
-    border-color: var(--accent-color); box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-/* --- FEED GRID (MANTIDO) --- */
+/* --- FEED GRID --- */
 .feed-container {
     max-width: 1200px; margin: 0 auto 100px; padding: 0 5%;
     display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -84,16 +64,23 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 /* CARD */
 .post-card {
     background-color: var(--card-bg); border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg); padding: 2rem;
+    
     display: flex; flex-direction: column; gap: 1.2rem;
     box-shadow: var(--shadow-card);
-    opacity: 1; 
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Classe necessária para o filtro funcionar */
-.post-card.hidden { display: none; }
+/* Animação suave nos cards */
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  
+}
 
 .card-top { display: flex; justify-content: space-between; align-items: start; }
+
 .topic-tag {
     font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.5px; padding: 6px 12px; border-radius: 8px;
@@ -103,45 +90,36 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 .post-card h2 { font-size: 1.4rem; font-weight: 700; line-height: 1.3; margin-top: 0.5rem;}
 .post-excerpt { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; flex-grow: 1; }
 
+/* Botão Link */
 .card-action {
     width: 100%; padding: 14px; border-radius: var(--radius-sm);
     background: var(--text-primary); color: var(--bg-color);
     font-weight: 600; font-size: 0.9rem;
     display: flex; justify-content: center; align-items: center; gap: 8px;
-    transition: transform 0.2s;
+    transition: transform 0.2s, opacity 0.2s;
+    text-align: center;
 }
 .card-action:hover { opacity: 0.9; transform: scale(1.02); }
-
-/* --- MODAL (MANTIDO) --- */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
-    z-index: 2000; opacity: 0; pointer-events: none;
-    display: flex; justify-content: center; align-items: center;
-    transition: opacity 0.3s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal-content {
-    background: var(--modal-bg); width: 90%; max-width: 600px; padding: 2.5rem;
-    border-radius: var(--radius-lg); border: 1px solid var(--border-color);
-    transform: translateY(50px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-}
-.modal-overlay.open .modal-content { transform: translateY(0); }
-.close-modal { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.5rem; color: var(--text-secondary); background: transparent; }
 
 /* --- RESPONSIVO --- */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2.5rem; }
     .feed-container { grid-template-columns: 1fr; }
-    .topic-nav { overflow-x: auto; justify-content: flex-start; padding-bottom: 10px; flex-wrap: nowrap; white-space: nowrap; }
 }
 
-/* Animação do Filtro */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
+/* Animação de Entrada */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Delays para animação em cascata */
+.post-card:nth-child(1) { animation-delay: 0.1s; }
+.post-card:nth-child(2) { animation-delay: 0.2s; }
+.post-card:nth-child(3) { animation-delay: 0.3s; }
+.post-card:nth-child(4) { animation-delay: 0.4s; }
+.post-card:nth-child(5) { animation-delay: 0.5s; }
+.post-card:nth-child(6) { animation-delay: 0.6s; }
 </style>
 </head>
 <body>
@@ -152,7 +130,7 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
         
         <div class="nav-menu">
             <a href="index.html">Início</a>
-            <a href="central-de-conteudo.html"style="color:blue;">Conteúdos</a>
+            <a href="central-de-conteudo.html" style="color:blue;">Conteúdos</a>
             <a href="bloco-de-notas.html">Bloco de Notas</a>
             <a href="configuracoes.html">Configurações</a>
         </div>
@@ -184,110 +162,78 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
         </div>
     </nav>
 </header>
-    <section class="hero">
-        <h1>Central de Conteúdo</h1>
-        <p>Veja tudo que você precisa, selecione uma categoria que preferir e estude!</p>
-    </section>
 
-    <div class="topic-nav" id="topic-filters">
-        <button class="topic-btn active" data-filter="all">Todos</button>
-        <button class="topic-btn" data-filter="dev">Desenvolvimento</button>
-        <button class="topic-btn" data-filter="design">Design</button>
-        <button class="topic-btn" data-filter="produtividade">Produtividade</button>
-        <button class="topic-btn" data-filter="estudos">Estudos</button>
-    </div>
+    <section class="hero">
+        <h1>Área de Estudo</h1>
+        <p>Selecione a matéria que deseja revisar hoje e acesse os conteúdos completos.</p>
+    </section>
 
     <main class="feed-container">
 
-        <article class="post-card" data-category="dev">
+        <article class="post-card">
             <div class="card-top">
-                <span class="topic-tag">Dev & Tech</span>
-                <i class="ph ph-code" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
+                <span class="topic-tag">Exatas</span>
+                <i class="ph ph-calculator" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
             </div>
-            <h2>Estrutura de Dados</h2>
-            <p class="post-excerpt">Revisão sobre arrays, listas ligadas e árvores binárias. Conceitos fundamentais para entrevistas técnicas.</p>
-            <button class="card-action" onclick="openModal('Estrutura de Dados', 'Conteúdo detalhado sobre estruturas de dados: Arrays são rápidos para leitura, Listas Ligadas para inserção...')">Ver Resumo <i class="ph ph-arrow-right"></i></button>
+            <h2>Matemática</h2>
+            <p class="post-excerpt">Álgebra, Geometria, Funções e Estatística. A base para cálculos e raciocínio lógico.</p>
+            <a href="matematica.html" class="card-action">Acessar Matéria <i class="ph ph-arrow-right"></i></a>
         </article>
 
-        <article class="post-card" data-category="design">
+        <article class="post-card">
             <div class="card-top">
-                <span class="topic-tag">Design</span>
-                <i class="ph ph-paint-brush" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
+                <span class="topic-tag">Linguagens</span>
+                <i class="ph ph-book-bookmark" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
             </div>
-            <h2>Psicologia das Cores</h2>
-            <p class="post-excerpt">Como utilizar cores para influenciar a decisão do usuário em interfaces digitais e branding.</p>
-            <button class="card-action" onclick="openModal('Psicologia das Cores', 'O azul transmite confiança e segurança, muito usado em bancos. O vermelho cria urgência...')">Ver Resumo <i class="ph ph-arrow-right"></i></button>
+            <h2>Português</h2>
+            <p class="post-excerpt">Gramática, Literatura, Interpretação de Texto e Redação. Domine a língua nativa.</p>
+            <a href="portugues.html" class="card-action">Acessar Matéria <i class="ph ph-arrow-right"></i></a>
         </article>
 
-        <article class="post-card" data-category="produtividade">
+        <article class="post-card">
             <div class="card-top">
-                <span class="topic-tag">Produtividade</span>
-                <i class="ph ph-lightning" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
+                <span class="topic-tag">Humanas</span>
+                <i class="ph ph-globe-hemisphere-west" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
             </div>
-            <h2>Método Pomodoro</h2>
-            <p class="post-excerpt">Técnica de gerenciamento de tempo que utiliza um cronômetro para dividir o trabalho em intervalos.</p>
-            <button class="card-action" onclick="openModal('Método Pomodoro', 'A técnica consiste em usar um cronômetro para dividir o trabalho em períodos de 25 minutos...')">Ver Resumo <i class="ph ph-arrow-right"></i></button>
+            <h2>Geografia</h2>
+            <p class="post-excerpt">Geopolítica, Cartografia, Clima e Relevo. Entenda o espaço físico e político.</p>
+            <a href="geografia.html" class="card-action">Acessar Matéria <i class="ph ph-arrow-right"></i></a>
         </article>
 
-         <article class="post-card" data-category="estudos">
+        <article class="post-card">
             <div class="card-top">
-                <span class="topic-tag">Estudos</span>
-                <i class="ph ph-book-open" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
+                <span class="topic-tag">Humanas</span>
+                <i class="ph ph-scroll" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
             </div>
-            <h2>Técnica Feynman</h2>
-            <p class="post-excerpt">O melhor método para aprender qualquer coisa: explique o conceito como se estivesse ensinando uma criança.</p>
-            <button class="card-action" onclick="openModal('Técnica Feynman', 'Passo 1: Escolha um conceito. Passo 2: Explique-o de forma simples. Passo 3: Identifique as falhas...')">Ver Resumo <i class="ph ph-arrow-right"></i></button>
+            <h2>História</h2>
+            <p class="post-excerpt">História do Brasil, Geral e Contemporânea. Os eventos que moldaram a sociedade.</p>
+            <a href="historia.html" class="card-action">Acessar Matéria <i class="ph ph-arrow-right"></i></a>
         </article>
 
-        <article class="post-card" data-category="dev">
+        <article class="post-card">
             <div class="card-top">
-                <span class="topic-tag">Dev & Tech</span>
-                <i class="ph ph-terminal" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
+                <span class="topic-tag">Biológicas</span>
+                <i class="ph ph-dna" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
             </div>
-            <h2>CSS Grid vs Flexbox</h2>
-            <p class="post-excerpt">Quando usar um ou outro? Um guia prático para layout responsivo moderno na web.</p>
-            <button class="card-action" onclick="openModal('Grid vs Flexbox', 'Flexbox é unidimensional (linha OU coluna). Grid é bidimensional (linha E coluna). Use Flex para componentes...')">Ver Resumo <i class="ph ph-arrow-right"></i></button>
+            <h2>Biologia</h2>
+            <p class="post-excerpt">Citologia, Genética, Ecologia e Corpo Humano. O estudo da vida em detalhes.</p>
+            <a href="biologia.html" class="card-action">Acessar Matéria <i class="ph ph-arrow-right"></i></a>
+        </article>
+
+        <article class="post-card">
+            <div class="card-top">
+                <span class="topic-tag">Exatas</span>
+                <i class="ph ph-atom" style="font-size: 1.5rem; color: var(--text-secondary)"></i>
+            </div>
+            <h2>Física</h2>
+            <p class="post-excerpt">Mecânica, Óptica, Termodinâmica e Eletricidade. As leis que regem o universo.</p>
+            <a href="fisica.html" class="card-action">Acessar Matéria <i class="ph ph-arrow-right"></i></a>
         </article>
 
     </main>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()"><i class="ph ph-x"></i></button>
-            <h2 id="modal-title" style="margin-bottom: 1rem;">Título</h2>
-            <p id="modal-body" style="color: var(--text-secondary);">Conteúdo...</p>
-        </div>
-    </div>
-
     <script>
-        // --- 1. LÓGICA DE FILTRAGEM ---
-        const filterBtns = document.querySelectorAll('.topic-btn');
-        const cards = document.querySelectorAll('.post-card');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const filterValue = btn.getAttribute('data-filter');
-
-                cards.forEach(card => {
-                    const cardCategory = card.getAttribute('data-category');
-
-                    if (filterValue === 'all' || filterValue === cardCategory) {
-                        card.classList.remove('hidden');
-                        // Reinicia animação
-                        card.style.animation = 'none';
-                        card.offsetHeight; 
-                        card.style.animation = 'fadeIn 0.5s ease forwards';
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-            });
-        });
-
-        // --- 2. DARK MODE ---
+        // --- 1. DARK MODE (MANTIDO) ---
         const themeBtn = document.getElementById('theme-toggle');
         const themeIcon = themeBtn ? themeBtn.querySelector('i') : null;
 
@@ -310,85 +256,49 @@ button { cursor: pointer; border: none; outline: none; font-family: inherit; }
             });
         }
 
-// --- 3. MENU MOBILE ---
-// --- 3. MENU MOBILE ---
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.querySelector('.nav-menu');
-const hamburgerIcon = hamburger.querySelector('i');
+        // --- 2. MENU MOBILE (MANTIDO) ---
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburgerIcon = hamburger.querySelector('i');
 
-// Função centralizada para abrir/fechar e travar o scroll
-function toggleMenu(isOpen) {
-    if (isOpen) {
-        navMenu.classList.add('active');
-        hamburgerIcon.classList.replace('ph-list', 'ph-x');
-        document.body.style.overflow = 'hidden'; // TRAVA O ARRASTE/SCROLL
-    } else {
-        navMenu.classList.remove('active');
-        hamburgerIcon.classList.replace('ph-x', 'ph-list');
-        document.body.style.overflow = 'auto';   // LIBERA O ARRASTE/SCROLL
-    }
-}
-
-// Alternar menu ao clicar no botão
-hamburger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = navMenu.classList.contains('active');
-    toggleMenu(!isOpen);
-});
-
-// Fechar ao tocar fora
-document.addEventListener('click', (e) => {
-    if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-        toggleMenu(false);
-    }
-});
-
-// Lógica de Swipe para fechar
-let touchStartX = 0;
-
-document.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-document.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].screenX;
-    const swipeDistance = touchEndX - touchStartX;
-
-    // Se o menu estiver ativo e o usuário deslizar para a esquerda (<-)
-    if (navMenu.classList.contains('active') && swipeDistance < -50) {
-        toggleMenu(false);
-    }
-}, { passive: true });
-
-
-        // --- 4. MODAL ---
-        const modal = document.getElementById('modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-
-        function openModal(title, body) {
-            modalTitle.innerText = title;
-            modalBody.innerText = body;
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden'; 
+        function toggleMenu(isOpen) {
+            if (isOpen) {
+                navMenu.classList.add('active');
+                hamburgerIcon.classList.replace('ph-list', 'ph-x');
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                navMenu.classList.remove('active');
+                hamburgerIcon.classList.replace('ph-x', 'ph-list');
+                document.body.style.overflow = 'auto';   
+            }
         }
 
-        function closeModal() {
-            modal.classList.remove('open');
-            document.body.style.overflow = 'auto';
-        }
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = navMenu.classList.contains('active');
+            toggleMenu(!isOpen);
+        });
 
-        if(modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
-            });
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
-                closeModal();
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                toggleMenu(false);
             }
         });
+
+        // Swipe para fechar mobile
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            if (navMenu.classList.contains('active') && (touchEndX - touchStartX) < -50) {
+                toggleMenu(false);
+            }
+        }, { passive: true });
+        
+        // --- FILTROS E MODAL JS REMOVIDOS ---
     </script>
 </body>
 </html>
