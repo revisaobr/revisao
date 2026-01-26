@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada | 404</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* --- CONFIGURAÇÃO FIXA DARK MODE --- */
+        :root {
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+
+            /* Cores do Tema Escuro */
+            --bg-color: #000000;
+            --cordabarra: rgba(0, 0, 0, 0.8);
+            
+            --card-bg: #0f0f0f; 
+            
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-meta: #9ca3af;
+            
+            --accent-color: #3b82f6; 
+            
+            --border-color: #27272a;
+            --contornodacaixa: #27272a;
+            
+            --shadow-card: 0 0 0 1px #27272a; 
+            --shadow-hover: 0 0 0 1px #52525b, 0 0 15px rgba(255,255,255,0.05);
+            
+            --botaocor: #000000;
+            --textobotao: #ffffff;
+            
+            --radius-lg: 20px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+        }
+
+        .error-card {
+            background-color: var(--card-bg);
+            /* A borda aqui é feita via shadow conforme suas variaveis */
+            box-shadow: var(--shadow-card);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Efeito sutil ao passar o mouse */
+        .error-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Ícone flutuante */
+        .icon-area {
+            font-size: 80px;
+            color: var(--text-primary); /* Branco/Cinza claro */
+            margin-bottom: 24px;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .status-code {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-meta);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+
+        /* Área de Botões */
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Botão Principal (Destaque Branco no fundo Preto) */
+        .btn-primary {
+            background-color: var(--text-primary); 
+            color: var(--bg-color); /* Texto preto */
+            border: 1px solid var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Botão Secundário (Borda simples, fundo preto) */
+        .btn-secondary {
+            background-color: var(--botaocor);
+            color: var(--textobotao);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            background-color: #1a1a1a; /* Leve destaque no hover */
+        }
+
+        /* Animação Flutuante */
+        @keyframes float {
+            0% { transform: translateY(0px); opacity: 0.8; }
+            50% { transform: translateY(-10px); opacity: 1; }
+            100% { transform: translateY(0px); opacity: 0.8; }
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="error-card">
+            
+            <div class="status-code">404 • Not Found</div>
+
+            <div class="icon-area">
+                <i class="ph-fill ph-rocket-launch"></i>
+            </div>
+
+            <h1>Ops! Esta página não existe</h1>
+            
+            <p>
+                O endereço que você procura não existe. Volte para a página inicial para seus estudos!
+            </p>
+
+            <div class="actions">
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="ph ph-arrow-left"></i>
+                    Voltar
+                </a>
+                <a href="/" class="btn btn-primary">
+                    <i class="ph ph-house"></i>
+                    Início
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
