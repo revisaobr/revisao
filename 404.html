@@ -12,126 +12,157 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
+        /* --- 1. SISTEMA DE CORES E TEMAS --- */
         :root {
-            /* --- Paleta Minimalista Dark --- */
-            --bg-pure-black: #000000;
+            /* TEMA CLARO (Padrão) */
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             
-            /* O cartão é ligeiramente mais claro que o fundo puro para contraste */
-            --card-bg: #0a0a0a; 
+            --bg-body: #F2F2F2;
+            --card-bg: #FFFFFF;
+            
+            --card-border: #E5E5E5;
+            --card-border-highlight: #FFFFFF; /* Brilho superior sutil no claro */
+
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            
+            --accent-color: #3b82f6; /* Azul mantido */
+            --badge-bg: #F4F4F5;     /* Fundo do badge no claro */
+            --badge-border: #E4E4E7;
+
+            --btn-primary-bg: #111111;
+            --btn-primary-text: #FFFFFF;
+            
+            --btn-sec-bg: transparent;
+            --btn-sec-text: #666666;
+            --btn-sec-border: #E5E5E5;
+            --btn-sec-hover-bg: #FAFAFA;
+            --btn-sec-hover-border: #D4D4D4;
+
+            /* Gradiente do ícone escuro para o tema claro */
+            --icon-gradient: linear-gradient(135deg, #1e293b 0%, #64748b 100%);
+            
+            --shadow-card: 0 20px 40px -20px rgba(0,0,0,0.1);
+            
+            --radius-xl: 24px;
+            --radius-md: 12px;
+        }
+
+        /* TEMA ESCURO (Suas cores originais) */
+        body.dark-mode {
+            --bg-body: #000000;
+            --card-bg: #0a0a0a;
+            
             --card-border: #1f1f1f;
             --card-border-highlight: rgba(255, 255, 255, 0.1);
 
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             
-            --accent-color: #3b82f6; /* Azul vibrante para o ponto da logo */
+            --badge-bg: #111111;
+            --badge-border: #1f1f1f;
 
             --btn-primary-bg: #ffffff;
             --btn-primary-text: #000000;
             
-            --btn-sec-bg: transparent;
+            --btn-sec-text: #a1a1aa;
             --btn-sec-border: #27272a;
-            --btn-sec-hover: #18181b;
+            --btn-sec-hover-bg: #18181b;
+            --btn-sec-hover-border: #3f3f46;
 
-            /* Ícone com gradiente sutil para profundidade */
+            /* Gradiente original claro para o tema escuro */
             --icon-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-
-            --radius-xl: 24px;
-            --radius-md: 12px;
             
-            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --shadow-card: none; /* Sem sombra no fundo preto total */
         }
 
+        /* --- 2. RESET E ESTRUTURA --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
             font-family: var(--font-main);
-            background-color: var(--bg-pure-black); /* Preto Puro */
+            background-color: var(--bg-body);
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 24px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* --- Header com Logo --- */
+        /* --- 3. HEADER & LOGO --- */
         .top-header {
-            margin-bottom: 40px;
+            margin-bottom: 24px;
             text-align: center;
-            animation: fadeDown 0.8s ease-out forwards;
+            animation: fadeDown 0.6s ease-out forwards;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.03em;
             color: var(--text-primary);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 2px;
         }
 
-        /* O ponto colorido na logo */
         .logo .dot {
             color: var(--accent-color);
-            font-size: 28px;
+            font-size: 32px;
             line-height: 0;
-            position: relative;
-            top: 2px;
+            margin-bottom: 8px; /* Ajuste ótico */
         }
 
-        /* --- Container Principal --- */
+        /* --- 4. CONTAINER E CARD --- */
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             perspective: 1000px;
         }
 
-        /* --- Card Principal --- */
         .error-card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
-            /* Luz sutil vinda de cima na borda */
             border-top-color: var(--card-border-highlight); 
             border-radius: var(--radius-xl);
-            padding: 48px;
+            padding: 48px 40px;
             text-align: center;
-            /* Sombra para destacar do fundo preto */
-            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8);
+            box-shadow: var(--shadow-card);
             
-            /* Animação de Entrada */
+            /* Animação */
             opacity: 0;
             transform: translateY(30px);
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Badge de Status */
+        /* Badge */
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             color: var(--text-secondary);
-            background: #111111;
-            border: 1px solid var(--card-border);
+            background: var(--badge-bg);
+            border: 1px solid var(--badge-border);
             padding: 8px 16px;
             border-radius: 99px;
             margin-bottom: 32px;
         }
 
-        /* Área do Ícone */
+        /* Ícone Animado */
         .icon-area {
             font-size: 72px;
             margin-bottom: 24px;
@@ -139,26 +170,27 @@
             background: var(--icon-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+            /* Filtro de sombra ajustado para não quebrar no claro */
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
             animation: float 6s ease-in-out infinite;
         }
 
         h1 {
-            font-size: 30px;
+            font-size: 26px;
             font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
             color: var(--text-primary);
         }
 
         p {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 40px;
         }
 
-        /* --- Botões --- */
+        /* --- 5. BOTÕES --- */
         .actions {
             display: flex;
             flex-direction: column;
@@ -173,12 +205,13 @@
             padding: 16px 24px;
             border-radius: var(--radius-md);
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             text-decoration: none;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
-        /* Botão Primário (Branco) */
+        /* Primário */
         .btn-primary {
             background-color: var(--btn-primary-bg);
             color: var(--btn-primary-text);
@@ -187,23 +220,23 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
+            opacity: 0.9;
         }
 
-        /* Botão Secundário (Outline) */
+        /* Secundário */
         .btn-secondary {
             background-color: var(--btn-sec-bg);
-            color: var(--text-secondary);
+            color: var(--btn-sec-text);
             border: 1px solid var(--btn-sec-border);
         }
 
         .btn-secondary:hover {
-            background-color: var(--btn-sec-hover);
+            background-color: var(--btn-sec-hover-bg);
+            border-color: var(--btn-sec-hover-border);
             color: var(--text-primary);
-            border-color: var(--text-secondary);
         }
 
-        /* --- Animações --- */
+        /* --- ANIMAÇÕES --- */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -231,16 +264,11 @@
 </head>
 <body>
 
-
-
     <main class="container">
-      
+        
         <div class="error-card">
-                <header class="top-header">
-        <div class="logo">
-            Revisão
-        </div>
-    </header>
+              
+      
             <div class="status-badge">
                 404 • Página não encontrada
             </div>
@@ -252,13 +280,11 @@
             <h1>Ops! Página não encontrada</h1>
             
             <p>
-                A página que você tentou acessar não existe ou foi deletada.
+                A página que você tentou acessar não existe, mudou de endereço ou foi deletada.
             </p>
 
             <div class="actions">
-                <a href="javascript:history.back()" class="btn btn-secondary">
-                    Voltar
-                </a>
+          
                 <a href="index.html" class="btn btn-primary">
                     <i class="ph-bold ph-house"></i>
                     Ir para o Início
@@ -266,6 +292,30 @@
             </div>
         </div>
     </main>
+
+    <script>
+        // Script de Auto-Detecção de Tema
+        (function() {
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+                
+                // Monitora mudanças no sistema em tempo real
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (!localStorage.getItem('theme')) {
+                        if (e.matches) document.body.classList.add('dark-mode');
+                        else document.body.classList.remove('dark-mode');
+                    }
+                });
+            } catch (e) { console.error(e); }
+        })();
+    </script>
 
 </body>
 </html>
