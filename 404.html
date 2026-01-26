@@ -3,111 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página não encontrada | 404</title>
+    <title>Página não encontrada | Revisão</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        /* --- CONFIGURAÇÃO FIXA DARK MODE --- */
         :root {
-            --font-main: 'Plus Jakarta Sans', sans-serif;
+            /* --- Paleta Minimalista Dark --- */
+            --bg-pure-black: #000000;
+            
+            /* O cartão é ligeiramente mais claro que o fundo puro para contraste */
+            --card-bg: #0a0a0a; 
+            --card-border: #1f1f1f;
+            --card-border-highlight: rgba(255, 255, 255, 0.1);
 
-            /* Cores do Tema Escuro */
-            --bg-color: #000000;
-            --cordabarra: rgba(0, 0, 0, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
             
-            --card-bg: #0f0f0f; 
+            --accent-color: #3b82f6; /* Azul vibrante para o ponto da logo */
+
+            --btn-primary-bg: #ffffff;
+            --btn-primary-text: #000000;
             
-            --text-primary: #f9fafb;
-            --text-secondary: #d1d5db;
-            --text-meta: #9ca3af;
+            --btn-sec-bg: transparent;
+            --btn-sec-border: #27272a;
+            --btn-sec-hover: #18181b;
+
+            /* Ícone com gradiente sutil para profundidade */
+            --icon-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+
+            --radius-xl: 24px;
+            --radius-md: 12px;
             
-            --accent-color: #3b82f6; 
-            
-            --border-color: #27272a;
-            --contornodacaixa: #27272a;
-            
-            --shadow-card: 0 0 0 1px #27272a; 
-            --shadow-hover: 0 0 0 1px #52525b, 0 0 15px rgba(255,255,255,0.05);
-            
-            --botaocor: #000000;
-            --textobotao: #ffffff;
-            
-            --radius-lg: 20px;
-            --radius-sm: 10px;
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
             font-family: var(--font-main);
-            background-color: var(--bg-color);
+            background-color: var(--bg-pure-black); /* Preto Puro */
             color: var(--text-primary);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
             padding: 20px;
         }
 
+        /* --- Header com Logo --- */
+        .top-header {
+            margin-bottom: 40px;
+            text-align: center;
+            animation: fadeDown 0.8s ease-out forwards;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* O ponto colorido na logo */
+        .logo .dot {
+            color: var(--accent-color);
+            font-size: 28px;
+            line-height: 0;
+            position: relative;
+            top: 2px;
+        }
+
+        /* --- Container Principal --- */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+        }
+
+        /* --- Card Principal --- */
         .error-card {
             background-color: var(--card-bg);
-            /* A borda aqui é feita via shadow conforme suas variaveis */
-            box-shadow: var(--shadow-card);
-            border-radius: var(--radius-lg);
-            padding: 40px;
+            border: 1px solid var(--card-border);
+            /* Luz sutil vinda de cima na borda */
+            border-top-color: var(--card-border-highlight); 
+            border-radius: var(--radius-xl);
+            padding: 48px;
             text-align: center;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Sombra para destacar do fundo preto */
+            box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8);
+            
+            /* Animação de Entrada */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
         }
 
-        /* Efeito sutil ao passar o mouse */
-        .error-card:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
-        }
-
-        /* Ícone flutuante */
-        .icon-area {
-            font-size: 80px;
-            color: var(--text-primary); /* Branco/Cinza claro */
-            margin-bottom: 24px;
-            display: inline-block;
-            animation: float 4s ease-in-out infinite;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .status-code {
+        /* Badge de Status */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 600;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-meta);
-            border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            border-radius: 50px;
-            display: inline-block;
+            color: var(--text-secondary);
+            background: #111111;
+            border: 1px solid var(--card-border);
+            padding: 8px 16px;
+            border-radius: 99px;
+            margin-bottom: 32px;
+        }
+
+        /* Área do Ícone */
+        .icon-area {
+            font-size: 72px;
             margin-bottom: 24px;
+            display: inline-block;
+            background: var(--icon-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+            animation: float 6s ease-in-out infinite;
         }
 
         h1 {
-            font-size: 26px;
+            font-size: 30px;
             font-weight: 700;
             margin-bottom: 16px;
+            letter-spacing: -0.03em;
             color: var(--text-primary);
         }
 
@@ -115,100 +155,117 @@
             font-size: 16px;
             color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 36px;
+            margin-bottom: 40px;
         }
 
-        /* Área de Botões */
+        /* --- Botões --- */
         .actions {
             display: flex;
+            flex-direction: column;
             gap: 12px;
-            justify-content: center;
         }
 
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: var(--radius-sm);
+            gap: 10px;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             text-decoration: none;
             transition: all 0.2s ease;
-            cursor: pointer;
-            width: 100%;
         }
 
-        /* Botão Principal (Destaque Branco no fundo Preto) */
+        /* Botão Primário (Branco) */
         .btn-primary {
-            background-color: var(--text-primary); 
-            color: var(--bg-color); /* Texto preto */
-            border: 1px solid var(--text-primary);
+            background-color: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+            border: 1px solid var(--btn-primary-bg);
         }
 
         .btn-primary:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
         }
 
-        /* Botão Secundário (Borda simples, fundo preto) */
+        /* Botão Secundário (Outline) */
         .btn-secondary {
-            background-color: var(--botaocor);
-            color: var(--textobotao);
-            border: 1px solid var(--border-color);
+            background-color: var(--btn-sec-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--btn-sec-border);
         }
 
         .btn-secondary:hover {
+            background-color: var(--btn-sec-hover);
+            color: var(--text-primary);
             border-color: var(--text-secondary);
-            background-color: #1a1a1a; /* Leve destaque no hover */
         }
 
-        /* Animação Flutuante */
+        /* --- Animações --- */
         @keyframes float {
-            0% { transform: translateY(0px); opacity: 0.8; }
-            50% { transform: translateY(-10px); opacity: 1; }
-            100% { transform: translateY(0px); opacity: 0.8; }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsividade */
-        @media (max-width: 480px) {
-            .actions {
-                flex-direction: column;
+        @media (min-width: 480px) {
+             .actions {
+                flex-direction: row;
+            }
+            .btn {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+
+
+    <main class="container">
+      
         <div class="error-card">
-            
-            <div class="status-code">404 • Not Found</div>
+                <header class="top-header">
+        <div class="logo">
+            Revisão
+        </div>
+    </header>
+            <div class="status-badge">
+                404 • Página não encontrada
+            </div>
 
             <div class="icon-area">
                 <i class="ph-fill ph-rocket-launch"></i>
             </div>
 
-            <h1>Ops! Esta página não existe</h1>
+            <h1>Ops! Página não encontrada</h1>
             
             <p>
-                O endereço que você procura não existe. Volte para a página inicial para seus estudos!
+                A página que você tentou acessar não existe ou foi deletada.
             </p>
 
             <div class="actions">
                 <a href="javascript:history.back()" class="btn btn-secondary">
-                    <i class="ph ph-arrow-left"></i>
                     Voltar
                 </a>
-                <a href="/" class="btn btn-primary">
-                    <i class="ph ph-house"></i>
-                    Início
+                <a href="index.html" class="btn btn-primary">
+                    <i class="ph-bold ph-house"></i>
+                    Ir para o Início
                 </a>
             </div>
         </div>
-    </div>
+    </main>
 
 </body>
 </html>
