@@ -168,5 +168,16 @@
 
     </div>
     <script src="scripts.js"></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "848c88ab-5dde-4645-82b5-9c67b11bbda4",
+      // Opcional: Impede o prompt nativo automático para você controlar pelo botão
+      // allowLocalhostAsSecureOrigin: true, 
+    });
+  });
+</script>
 </body>
 </html>
