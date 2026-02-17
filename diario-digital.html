@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Diário Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #0a0a0a;
+    background-image: radial-gradient(at 20% 30%, rgba(19,19,19,0.8) 0px, transparent 50%),
+                      radial-gradient(at 80% 70%, rgba(30,30,30,0.6) 0px, transparent 50%);
+    color: #ffffff;
+    min-height: 100vh;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.95) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+.container { max-width: 900px; margin: 0 auto; }
+header { text-align: center; padding: 40px 0 20px; animation: slideDown 0.6s ease; }
+h1 { font-size: 3em; margin-bottom: 10px; background: linear-gradient(135deg, #ffffff 0%, #b8b8b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; letter-spacing: -1px; }
+.subtitle { color: #888; font-size: 1.2em; font-weight: 300; letter-spacing: 0.5px; }
+.controls { display: flex; gap: 15px; margin: 30px 0; flex-wrap: wrap; animation: slideUp 0.6s ease; }
+.search-box { flex: 1; min-width: 250px; position: relative; }
+.search-box input { width: 100%; padding: 14px 45px 14px 20px; background: rgba(26,26,26,0.8); backdrop-filter: blur(10px); border: 2px solid #2a2a2a; border-radius: 12px; color: #fff; font-size: 1em; transition: all 0.3s ease; font-weight: 400; font-family: 'Poppins', sans-serif; }
+.search-box input:focus { outline: none; border-color: #444; background: rgba(26,26,26,1); box-shadow: 0 0 20px rgba(255,255,255,0.05); }
+.search-box i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #666; pointer-events: none; }
+.controls-group { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn { padding: 14px 28px; background: rgba(42,42,42,0.8); backdrop-filter: blur(10px); border: 1px solid #2a2a2a; border-radius: 12px; color: #fff; cursor: pointer; font-size: 0.95em; font-weight: 500; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-family: 'Poppins', sans-serif; }
+.btn:hover { background: rgba(51,51,51,0.9); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); border-color: #3a3a3a; }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.btn-primary:hover { background: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%); }
+.filter-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; animation: slideUp 0.7s ease; }
+.filter-tag { padding: 8px 15px; background: #1a1a1a; border: 2px solid #2a2a2a; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; font-size: 0.9em; }
+.filter-tag:hover { border-color: #444; transform: scale(1.05); }
+.filter-tag.active { background: #3a3a3a; border-color: #555; }
+/* Modal */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; animation: fadeIn 0.3s ease; overflow-y: auto; padding: 20px; }
+.modal.show { display: flex; align-items: center; justify-content: center; }
+.modal-content { background: rgba(26,26,26,0.98); backdrop-filter: blur(20px); padding: 35px; border-radius: 20px; max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; animation: scaleIn 0.3s ease; border: 1px solid #2a2a2a; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #2a2a2a; }
+.modal-header h2 { font-size: 1.9em; font-weight: 600; letter-spacing: -0.5px; }
+.close-btn { background: rgba(42,42,42,0.5); border: 1px solid #3a3a3a; color: #fff; font-size: 1.3em; cursor: pointer; transition: all 0.3s ease; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.close-btn:hover { background: rgba(51,51,51,0.8); transform: rotate(90deg); border-color: #4a4a4a; }
+.form-group { margin-bottom: 25px; }
+.form-group label { display: flex; margin-bottom: 10px; color: #bbb; font-size: 0.95em; font-weight: 500; align-items: center; gap: 8px; }
+.char-counter { margin-left: auto; font-size: 0.85em; color: #666; font-weight: 400; }
+.char-counter.warning { color: #ffaa00; }
+.form-group input, .form-group textarea { width: 100%; padding: 14px 16px; background: rgba(10,10,10,0.6); border: 1px solid #2a2a2a; border-radius: 12px; color: #fff; font-size: 1em; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; font-weight: 400; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: #444; background: rgba(10,10,10,0.8); box-shadow: 0 0 0 3px rgba(68,68,68,0.1); }
+.form-group textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+.file-input-wrapper { position: relative; display: block; width: 100%; }
+.file-input-wrapper input[type=file] { position: absolute; left: -9999px; }
+.file-input-label { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #0a0a0a; border: 2px dashed #2a2a2a; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; color: #aaa; }
+.file-input-label:hover { border-color: #444; background: #131313; }
+.file-preview { margin-top: 15px; padding: 15px; background: #0a0a0a; border-radius: 8px; display: none; }
+.file-preview.show { display: block; }
+.remove-file-btn { background: rgba(244,67,54,0.15); border: 1px solid rgba(244,67,54,0.3); color: #f44336; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82em; margin-top: 8px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; font-family: 'Poppins', sans-serif; }
+.remove-file-btn:hover { background: rgba(244,67,54,0.25); }
+.hashtag-input-wrapper { position: relative; }
+.hashtag-suggestions { position: absolute; top: 100%; left: 0; right: 0; background: #0a0a0a; border: 2px solid #2a2a2a; border-top: none; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto; z-index: 100; display: none; }
+.hashtag-suggestions.show { display: block; }
+.hashtag-suggestion { padding: 10px 12px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 8px; }
+.hashtag-suggestion:hover { background: #1a1a1a; }
+.selected-hashtags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.hashtag-chip { padding: 6px 12px; background: #2a2a2a; border-radius: 15px; display: flex; align-items: center; gap: 8px; font-size: 0.9em; animation: scaleIn 0.2s ease; }
+.hashtag-chip button { background: none; border: none; color: #fff; cursor: pointer; padding: 0; font-size: 1.1em; transition: all 0.2s ease; }
+.hashtag-chip button:hover { transform: scale(1.2); color: #ff4444; }
+/* Posts */
+.posts-container { display: flex; flex-direction: column; gap: 20px; }
+.post { background: rgba(26,26,26,0.8); backdrop-filter: blur(10px); padding: 30px; border-radius: 18px; border: 1px solid #2a2a2a; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); animation: slideUp 0.5s ease; position: relative; overflow: hidden; }
+.post::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #3a3a3a, transparent); opacity: 0; transition: opacity 0.3s ease; }
+.post:hover { border-color: #3a3a3a; transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+.post:hover::before { opacity: 1; }
+.post.pinned { border-color: #4a4a4a; background: linear-gradient(135deg, rgba(26,26,26,0.9) 0%, rgba(37,37,37,0.9) 100%); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+.post.pinned::before { opacity: 1; background: linear-gradient(90deg, transparent, #555, transparent); }
+.post.draft { border-style: dashed; border-color: #3a3a3a; }
+.post-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
+.post-title-section { flex: 1; }
+.post-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.post-action-btn { background: rgba(42,42,42,0.5); border: 1px solid #2a2a2a; color: #888; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; font-size: 0.9em; }
+.post-action-btn:hover { background: rgba(51,51,51,0.8); color: #fff; border-color: #3a3a3a; transform: translateY(-2px); }
+.post-action-btn.active { color: #ffaa00; border-color: #ffaa00; background: rgba(255,170,0,0.1); }
+.post-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.badge { padding: 4px 12px; border-radius: 8px; font-size: 0.78em; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+.badge-pinned { background: rgba(100,100,100,0.2); color: #aaa; border: 1px solid #333; }
+.badge-draft { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
+.badge-favorite { background: rgba(255,170,0,0.1); color: #ffaa00; border: 1px solid rgba(255,170,0,0.2); }
+.badge-edited { background: rgba(33,150,243,0.1); color: #64b5f6; border: 1px solid rgba(33,150,243,0.15); }
+.badge-locked { background: rgba(156,39,176,0.1); color: #ce93d8; border: 1px solid rgba(156,39,176,0.2); }
+.post-mood-display { display: inline-block; margin-bottom: 8px; padding: 8px 14px; background: rgba(42,42,42,0.5); border: 1px solid #333; border-radius: 10px; font-size: 0.9em; color: #bbb; }
+.post-mood-display .mood-emoji { font-size: 1.1em; margin-right: 6px; }
+.post-title { font-size: 1.55em; font-weight: 600; color: #fff; letter-spacing: -0.3px; margin-bottom: 8px; line-height: 1.3; }
+.post-time { display: flex; align-items: center; gap: 8px; color: #666; font-size: 0.88em; flex-wrap: wrap; }
+.separator { color: #444; }
+.edited-info { color: #555; font-style: italic; }
+.post-description { margin-bottom: 18px; line-height: 1.7; color: #ccc; font-weight: 400; font-size: 0.98em; }
+.post-description a.ext-link { color: #7bb3ff; text-decoration: underline; cursor: pointer; }
+.post-description a.ext-link:hover { color: #a8cbff; }
+.post-media { margin: 15px 0; border-radius: 10px; overflow: hidden; }
+.post-media img { width: 100%; display: block; border-radius: 10px; }
+.post-hashtags { display: flex; flex-wrap: nowrap; gap: 8px; margin-top: 18px; padding-top: 18px; border-top: 1px solid #222; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px; }
+.post-hashtags::-webkit-scrollbar { display: none; }
+.post-hashtag { padding: 6px 14px; background: rgba(42,42,42,0.6); border: 1px solid #333; border-radius: 14px; font-size: 0.85em; color: #aaa; cursor: pointer; transition: all 0.3s ease; font-weight: 500; flex-shrink: 0; white-space: nowrap; }
+.post-hashtag:hover { background: rgba(51,51,51,0.8); color: #fff; transform: translateY(-2px); border-color: #444; }
+.empty-state { text-align: center; padding: 60px 20px; color: #666; }
+.empty-state i { font-size: 4em; margin-bottom: 20px; opacity: 0.3; display: block; }
+.empty-state h3 { font-size: 1.5em; margin-bottom: 10px; }
+/* Custom Popup */
+.custom-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; align-items: center; justify-content: center; }
+.custom-popup.show { display: flex; }
+.popup-content { background: rgba(26,26,26,0.98); backdrop-filter: blur(20px); padding: 30px; border-radius: 20px; max-width: 420px; width: 90%; border: 1px solid #2a2a2a; box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: scaleIn 0.3s ease; text-align: center; }
+.popup-icon { font-size: 3em; margin-bottom: 20px; }
+.popup-icon.warning { color: #ff9800; }
+.popup-icon.success { color: #4caf50; }
+.popup-icon.error { color: #f44336; }
+.popup-icon.info { color: #2196f3; }
+.popup-title { font-size: 1.5em; font-weight: 600; margin-bottom: 15px; color: #fff; }
+.popup-message { font-size: 1em; color: #aaa; margin-bottom: 25px; line-height: 1.5; word-break: break-all; }
+.popup-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.popup-btn { padding: 12px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 1em; font-weight: 500; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
+.popup-btn-confirm { background: linear-gradient(135deg, #f44336, #d32f2f); color: #fff; }
+.popup-btn-confirm:hover { transform: translateY(-2px); }
+.popup-btn-cancel { background: rgba(42,42,42,0.8); color: #fff; border: 1px solid #3a3a3a; }
+.popup-btn-cancel:hover { background: rgba(51,51,51,0.9); }
+.popup-btn-ok { background: linear-gradient(135deg, #4caf50, #388e3c); color: #fff; }
+.popup-btn-ok:hover { transform: translateY(-2px); }
+.popup-btn-link { background: linear-gradient(135deg, #1565c0, #0d47a1); color: #fff; }
+.popup-btn-link:hover { transform: translateY(-2px); }
+/* Mobile Menu */
+.mobile-menu-btn { display: none; position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: linear-gradient(135deg, #2a2a2a, #3a3a3a); border: 1px solid #3a3a3a; border-radius: 50%; color: #fff; font-size: 1.5em; cursor: pointer; z-index: 999; box-shadow: 0 8px 25px rgba(0,0,0,0.5); transition: all 0.3s ease; }
+.mobile-menu-btn:active { transform: scale(0.95); }
+.mobile-menu { display: none; position: fixed; bottom: 90px; right: 20px; background: rgba(26,26,26,0.98); backdrop-filter: blur(20px); border: 1px solid #2a2a2a; border-radius: 15px; padding: 10px; z-index: 998; box-shadow: 0 10px 40px rgba(0,0,0,0.6); animation: slideUp 0.3s ease; min-width: 220px; }
+.mobile-menu.show { display: block; }
+.mobile-menu-item { padding: 15px 20px; cursor: pointer; transition: all 0.2s ease; border-radius: 10px; display: flex; align-items: center; gap: 12px; color: #ccc; font-size: 0.95em; white-space: nowrap; }
+.mobile-menu-item:hover { background: rgba(42,42,42,0.8); color: #fff; }
+.mobile-menu-item i { width: 20px; text-align: center; }
+.mobile-divider { height: 1px; background: #2a2a2a; margin: 5px 0; }
+/* Section Headers */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin: 30px 0 20px 0; padding-bottom: 15px; border-bottom: 2px solid #2a2a2a; }
+.section-title { font-size: 1.4em; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 10px; }
+/* View Mode Toggle */
+.view-mode-toggle { display: flex; gap: 5px; background: rgba(26,26,26,0.8); padding: 5px; border-radius: 12px; border: 1px solid #2a2a2a; }
+.view-mode-btn { padding: 10px 16px; background: transparent; border: none; color: #666; cursor: pointer; border-radius: 8px; transition: all 0.3s ease; font-size: 1.1em; }
+.view-mode-btn.active { background: rgba(42,42,42,0.8); color: #fff; }
+.view-mode-btn:hover:not(.active) { color: #aaa; }
+/* Grid View */
+.posts-container.grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.posts-container.grid-view .post { height: 100%; display: flex; flex-direction: column; }
+.posts-container.grid-view .post-description { flex: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+/* Dropdown */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-content { display: none; position: absolute; right: 0; background: rgba(26,26,26,0.98); backdrop-filter: blur(10px); min-width: 200px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); border-radius: 12px; z-index: 1000; border: 1px solid #2a2a2a; overflow: hidden; margin-top: 5px; }
+.dropdown-content.show { display: block; }
+.dropdown-item { padding: 12px 18px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 12px; color: #ccc; font-size: 0.95em; }
+.dropdown-item:hover { background: rgba(42,42,42,0.8); color: #fff; }
+.dropdown-item i { width: 18px; text-align: center; }
+.dropdown-divider { height: 1px; background: #2a2a2a; margin: 5px 0; }
+/* Mood */
+.mood-selector { display: flex; gap: 10px; flex-wrap: wrap; }
+.mood-option { padding: 10px 16px; background: rgba(26,26,26,0.6); border: 1px solid #2a2a2a; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-size: 1.4em; display: flex; align-items: center; justify-content: center; min-width: 50px; min-height: 50px; }
+.mood-option:hover { border-color: #3a3a3a; transform: scale(1.05); }
+.mood-option.selected { background: rgba(42,42,42,0.8); border-color: #555; box-shadow: 0 0 0 2px #555; }
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+/* Carousel */
+.carousel-wrapper { position: relative; border-radius: 12px; overflow: hidden; margin: 15px 0; user-select: none; }
+.carousel-track { display: flex; transition: transform 0.35s ease; will-change: transform; }
+.carousel-slide { min-width: 100%; flex-shrink: 0; }
+.carousel-slide img { width: 100%; max-height: 480px; object-fit: cover; display: block; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.55); border: none; color: #fff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; font-size: 1.1em; transition: all 0.2s ease; }
+.carousel-btn:hover { background: rgba(0,0,0,0.8); }
+.carousel-prev { left: 10px; }
+.carousel-next { right: 10px; }
+.carousel-counter { position: absolute; top: 10px; right: 12px; background: rgba(0,0,0,0.55); color: #fff; font-size: 0.78em; padding: 4px 10px; border-radius: 20px; z-index: 5; }
+.carousel-dots { display: flex; justify-content: center; gap: 7px; padding: 10px 0 2px; }
+.carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: #333; cursor: pointer; transition: all 0.25s ease; border: none; }
+.carousel-dot.active { background: #aaa; transform: scale(1.2); }
+/* Images preview grid in form */
+.images-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 12px; }
+.img-preview-item { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1; }
+.img-preview-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-preview-item .rm-img-btn { position: absolute; top: 4px; right: 4px; background: rgba(244,67,54,0.8); border: none; color: #fff; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.75em; display: flex; align-items: center; justify-content: center; }
+.img-preview-item .rm-img-btn:hover { background: #f44336; transform: scale(1.1); }
+/* Custom Audio Player */
+.audio-player { background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(30,30,30,0.95)); border: 1px solid #2a2a2a; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; margin: 12px 0; }
+.audio-play-btn { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3a3a3a, #555); border: none; color: #fff; font-size: 1.1em; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+.audio-play-btn:hover { background: linear-gradient(135deg, #555, #777); transform: scale(1.05); }
+.audio-info { flex: 1; min-width: 0; }
+.audio-title-text { font-size: 0.8em; color: #888; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.audio-progress-row { display: flex; align-items: center; gap: 10px; }
+.audio-progress-bar-wrap { flex: 1; height: 4px; background: #2a2a2a; border-radius: 2px; cursor: pointer; position: relative; }
+.audio-progress-fill { height: 100%; background: linear-gradient(90deg, #888, #bbb); border-radius: 2px; pointer-events: none; transition: width 0.1s linear; }
+.audio-time-display { font-size: 0.75em; color: #666; white-space: nowrap; min-width: 85px; text-align: right; }
+/* Lock Screen */
+.lock-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #080808; z-index: 99999; flex-direction: column; align-items: center; justify-content: center; }
+.lock-screen.show { display: flex; }
+.lock-box { text-align: center; max-width: 380px; width: 90%; padding: 40px 35px; background: rgba(22,22,22,0.98); border: 1px solid #2a2a2a; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: scaleIn 0.4s ease; }
+.lock-icon-big { font-size: 4em; margin-bottom: 20px; }
+.lock-box-title { font-size: 1.9em; font-weight: 700; margin-bottom: 8px; }
+.lock-box-sub { color: #666; font-size: 0.9em; margin-bottom: 28px; line-height: 1.5; }
+.lock-input-wrap { position: relative; margin-bottom: 14px; }
+.lock-input-wrap input { width: 100%; padding: 14px 50px 14px 18px; background: rgba(10,10,10,0.7); border: 1px solid #2a2a2a; border-radius: 12px; color: #fff; font-size: 1.1em; font-family: 'Poppins', sans-serif; letter-spacing: 3px; text-align: center; transition: border-color 0.2s; }
+.lock-input-wrap input:focus { outline: none; border-color: #444; }
+.toggle-vis-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #555; cursor: pointer; font-size: 1em; }
+.lock-err { font-size: 0.83em; color: #f44336; margin-bottom: 14px; min-height: 18px; }
+.lock-reset-link { font-size: 0.8em; color: #444; cursor: pointer; margin-top: 18px; text-decoration: underline; transition: color 0.2s; }
+.lock-reset-link:hover { color: #888; }
+/* Password Manager Modal */
+.pw-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 20000; align-items: center; justify-content: center; padding: 20px; }
+.pw-modal.show { display: flex; }
+.pw-modal-box { background: rgba(26,26,26,0.98); backdrop-filter: blur(20px); padding: 35px; border-radius: 20px; max-width: 430px; width: 100%; border: 1px solid #2a2a2a; box-shadow: 0 20px 60px rgba(0,0,0,0.8); animation: scaleIn 0.3s ease; max-height: 90vh; overflow-y: auto; }
+.pw-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.pw-modal-title { font-size: 1.4em; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.pw-opt-btn { width: 100%; padding: 14px 18px; background: rgba(42,42,42,0.5); border: 1px solid #2a2a2a; border-radius: 12px; color: #ccc; font-size: 0.93em; text-align: left; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+.pw-opt-btn:hover { background: rgba(55,55,55,0.7); color: #fff; border-color: #3a3a3a; transform: translateX(4px); }
+.pw-opt-btn i { width: 20px; text-align: center; }
+.pw-opt-btn.danger { color: #ef5350; border-color: rgba(244,67,54,0.18); }
+.pw-opt-btn.danger:hover { background: rgba(244,67,54,0.1); }
+.pw-err { font-size: 0.83em; color: #f44336; margin-bottom: 12px; min-height: 18px; }
+/* Post lock overlay */
+.post-lock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 18px; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; }
+.post-lock-overlay:hover .lock-lbl { color: #aaa; }
+.post-lock-overlay .lock-ico { font-size: 2.6em; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8)); }
+.post-lock-overlay .lock-lbl { color: #888; font-size: 0.92em; font-weight: 500; }
+.post-lock-overlay .lock-hint { color: #555; font-size: 0.78em; }
+.post-blur-content { filter: blur(12px); pointer-events: none; user-select: none; }
+/* Toggle field for post password */
+.toggle-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(10,10,10,0.4); border: 1px solid #2a2a2a; border-radius: 10px; cursor: pointer; margin-bottom: 10px; }
+.toggle-row:hover { border-color: #3a3a3a; }
+.toggle-row input[type=checkbox] { width: 16px; height: 16px; cursor: pointer; accent-color: #666; }
+.toggle-row label { cursor: pointer; color: #bbb; font-size: 0.9em; margin: 0; }
+.post-pw-field { display: none; }
+.post-pw-field.show { display: block; }
+/* Responsive */
+@media (max-width: 768px) {
+    body { padding: 15px; padding-bottom: 100px; }
+    h1 { font-size: 2em; }
+    .subtitle { font-size: 1em; }
+    .controls { flex-direction: column; gap: 10px; }
+    .controls-group { display: none; }
+    .search-box { min-width: 100%; order: 1; }
+    .btn-primary { order: 2; width: 100%; justify-content: center; }
+    .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+    .filter-tags { gap: 8px; }
+    .filter-tag { padding: 8px 12px; font-size: 0.85em; }
+    .view-mode-toggle { display: none; }
+    .modal-content { padding: 25px 20px; margin: 0 10px; max-height: 85vh; }
+    .modal-header h2 { font-size: 1.5em; }
+    .mood-selector { gap: 8px; justify-content: center; }
+    .mood-option { padding: 8px 12px; font-size: 1.3em; min-width: 45px; min-height: 45px; }
+    .post { padding: 20px 18px; }
+    .post-header { flex-direction: column; gap: 15px; }
+    .post-actions { width: 100%; justify-content: flex-start; overflow-x: auto; padding-bottom: 5px; }
+    .post-action-btn { flex-shrink: 0; }
+    .post-title { font-size: 1.35em; }
+    .post-time { font-size: 0.85em; flex-wrap: wrap; }
+    .badge { font-size: 0.7em; padding: 4px 10px; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .section-title { font-size: 1.2em; }
+    .popup-content { padding: 25px 20px; }
+    .popup-title { font-size: 1.3em; }
+    .popup-buttons { flex-direction: column; }
+    .popup-btn { width: 100%; }
+    .dropdown-content { right: auto; left: 50%; transform: translateX(-50%); }
+}
+@media (max-width: 480px) {
+    h1 { font-size: 1.7em; }
+    .post { padding: 18px 15px; }
+    .post-title { font-size: 1.2em; }
+    .post-description { font-size: 0.95em; }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book"></i> Meu Diário Digital</h1>
+            <p class="subtitle">Registre seus momentos especiais</p>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Pesquisar por título...">
+                <i class="fas fa-search"></i>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('new')">
+                <i class="fas fa-plus"></i> Nova Publicação
+            </button>
+            <div class="controls-group">
+                <button class="btn" onclick="showAllPosts()"><i class="fas fa-th-list"></i> Todas</button>
+                <button class="btn" onclick="showDrafts()"><i class="fas fa-file-alt"></i> Rascunhos</button>
+                <button class="btn" onclick="showFavorites()"><i class="fas fa-star"></i> Favoritos</button>
+                <button class="btn" onclick="openPasswordManager()"><i class="fas fa-lock"></i> Senha</button>
+                <div class="dropdown">
+                    <button class="btn" onclick="toggleDropdown()"><i class="fas fa-ellipsis-v"></i> Mais</button>
+                    <div class="dropdown-content" id="moreDropdown">
+                        <div class="dropdown-item" onclick="showGallery()"><i class="fas fa-images"></i> Galeria</div>
+                        <div class="dropdown-item" onclick="showStats()"><i class="fas fa-chart-bar"></i> Estatísticas</div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" onclick="exportData()"><i class="fas fa-download"></i> Exportar</div>
+                        <div class="dropdown-item" onclick="importData()"><i class="fas fa-upload"></i> Importar</div>
+                    </div>
+                </div>
+                <div class="view-mode-toggle">
+                    <button class="view-mode-btn active" id="listModeBtn" onclick="setViewMode('list')" title="Lista"><i class="fas fa-list"></i></button>
+                    <button class="view-mode-btn" id="gridModeBtn" onclick="setViewMode('grid')" title="Grade"><i class="fas fa-th"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-item" onclick="showAllPosts();closeMobileMenu()"><i class="fas fa-th-list"></i> Todas as Publicações</div>
+            <div class="mobile-menu-item" onclick="showDrafts();closeMobileMenu()"><i class="fas fa-file-alt"></i> Rascunhos</div>
+            <div class="mobile-menu-item" onclick="showFavorites();closeMobileMenu()"><i class="fas fa-star"></i> Favoritos</div>
+            <div class="mobile-divider"></div>
+            <div class="mobile-menu-item" onclick="openPasswordManager();closeMobileMenu()"><i class="fas fa-lock"></i> Senha do Diário</div>
+            <div class="mobile-menu-item" onclick="showGallery();closeMobileMenu()"><i class="fas fa-images"></i> Galeria</div>
+            <div class="mobile-menu-item" onclick="showStats();closeMobileMenu()"><i class="fas fa-chart-bar"></i> Estatísticas</div>
+            <div class="mobile-divider"></div>
+            <div class="mobile-menu-item" onclick="exportData();closeMobileMenu()"><i class="fas fa-download"></i> Exportar</div>
+            <div class="mobile-menu-item" onclick="importData();closeMobileMenu()"><i class="fas fa-upload"></i> Importar</div>
+        </div>
+
+        <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="handleImportFile(event)">
+
+        <div class="filter-tags" id="filterTags"></div>
+
+        <div class="section-header">
+            <div class="section-title"><i class="fas fa-th-list" id="sectionIcon"></i><span id="sectionTitleText">Todas as Publicações</span></div>
+        </div>
+
+        <div class="posts-container" id="postsContainer">
+            <div class="empty-state"><i class="fas fa-pen-fancy"></i><h3>Nenhuma publicação ainda</h3><p>Comece criando sua primeira publicação!</p></div>
+        </div>
+
+        <!-- Generic Confirm Popup -->
+        <div class="custom-popup" id="customPopup">
+            <div class="popup-content">
+                <div class="popup-icon" id="popupIcon"><i class="fas fa-question-circle"></i></div>
+                <div class="popup-title" id="popupTitle">Confirmar</div>
+                <div class="popup-message" id="popupMessage">Tem certeza?</div>
+                <div class="popup-buttons" id="popupButtons"></div>
+            </div>
+        </div>
+
+        <!-- Link Navigation Popup -->
+        <div class="custom-popup" id="linkPopup">
+            <div class="popup-content">
+                <div class="popup-icon info"><i class="fas fa-external-link-alt"></i></div>
+                <div class="popup-title">Abrir Link Externo?</div>
+                <div class="popup-message" id="linkPopupMsg">Você está saindo do diário.</div>
+                <div class="popup-buttons">
+                    <button class="popup-btn popup-btn-cancel" onclick="closeLinkPopup()">Cancelar</button>
+                    <button class="popup-btn popup-btn-link" onclick="confirmLinkNav()"><i class="fas fa-external-link-alt"></i> Abrir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fas fa-plus"></i> Nova Publicação</h2>
+                <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="postForm">
+                <div class="form-group">
+                    <label><i class="fas fa-heading"></i> Título <span class="char-counter" id="titleCounter">0/100</span></label>
+                    <input type="text" id="postTitle" required placeholder="Digite o título..." maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Descrição <span class="char-counter" id="descCounter">0/5000</span></label>
+                    <textarea id="postDescription" required placeholder="Conte o que aconteceu..." maxlength="5000"></textarea>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-smile"></i> Como você está se sentindo?</label>
+                    <div class="mood-selector" id="moodSelector">
+                        <div class="mood-option" data-mood="apaixonado" onclick="selectMood('apaixonado','😍','Está se sentindo apaixonado')">😍</div>
+                        <div class="mood-option" data-mood="grato" onclick="selectMood('grato','☺️','Está se sentindo grato')">☺️</div>
+                        <div class="mood-option" data-mood="com-fome" onclick="selectMood('com-fome','😋','Está se sentindo com fome')">😋</div>
+                        <div class="mood-option" data-mood="com-raiva" onclick="selectMood('com-raiva','😡','Está se sentindo com raiva')">😡</div>
+                        <div class="mood-option" data-mood="confuso" onclick="selectMood('confuso','🤔','Está se sentindo confuso')">🤔</div>
+                        <div class="mood-option" data-mood="comemorativo" onclick="selectMood('comemorativo','🥳','Está se sentindo comemorativo')">🥳</div>
+                        <div class="mood-option" data-mood="enjoado" onclick="selectMood('enjoado','🤢','Está se sentindo enjoado')">🤢</div>
+                        <div class="mood-option" data-mood="malicioso" onclick="selectMood('malicioso','😈','Está se sentindo malicioso')">😈</div>
+                        <div class="mood-option" data-mood="brincalhao" onclick="selectMood('brincalhao','🤪','Está se sentindo brincalhão')">🤪</div>
+                        <div class="mood-option" data-mood="triste" onclick="selectMood('triste','🥺','Está se sentindo triste')">🥺</div>
+                        <div class="mood-option" data-mood="muito-triste" onclick="selectMood('muito-triste','😭','Está se sentindo muito triste')">😭</div>
+                        <div class="mood-option" data-mood="com-sono" onclick="selectMood('com-sono','🥱','Está se sentindo com sono')">🥱</div>
+                        <div class="mood-option" data-mood="desapontado" onclick="selectMood('desapontado','🫤','Está se sentindo desapontado')">🫤</div>
+                        <div class="mood-option" data-mood="com-risadas" onclick="selectMood('com-risadas','😂','Está se sentindo com risadas')">😂</div>
+                        <div class="mood-option" data-mood="animado" onclick="selectMood('animado','😃','Está se sentindo animado')">😃</div>
+                        <div class="mood-option" data-mood="surpreso" onclick="selectMood('surpreso','😲','Está se sentindo surpreso')">😲</div>
+                        <div class="mood-option" data-mood="com-calor" onclick="selectMood('com-calor','🥵','Está se sentindo com calor')">🥵</div>
+                        <div class="mood-option" data-mood="com-frio" onclick="selectMood('com-frio','🥶','Está se sentindo com frio')">🥶</div>
+                        <div class="mood-option" data-mood="doente" onclick="selectMood('doente','🤒','Está se sentindo doente')">🤒</div>
+                        <div class="mood-option" data-mood="com-vergonha" onclick="selectMood('com-vergonha','😳','Está se sentindo com vergonha')">😳</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-hashtag"></i> Hashtags</label>
+                    <div class="hashtag-input-wrapper">
+                        <input type="text" id="hashtagInput" placeholder="Digite # para adicionar tags...">
+                        <div class="hashtag-suggestions" id="hashtagSuggestions"></div>
+                    </div>
+                    <div class="selected-hashtags" id="selectedHashtags"></div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-images"></i> Imagens (pode selecionar várias)</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="imageInput" accept="image/*" multiple>
+                        <label for="imageInput" class="file-input-label"><i class="fas fa-cloud-upload-alt"></i><span>Clique para adicionar imagens</span></label>
+                    </div>
+                    <div class="images-preview-grid" id="imagesPreviewGrid" style="display:none;margin-top:10px;"></div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-microphone"></i> Áudio</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="audioInput" accept="audio/*">
+                        <label for="audioInput" class="file-input-label"><i class="fas fa-cloud-upload-alt"></i><span>Clique para adicionar áudio</span></label>
+                    </div>
+                    <div class="file-preview" id="audioPreview"></div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-row" onclick="togglePostPwField()">
+                        <input type="checkbox" id="postPwCheck">
+                        <label for="postPwCheck"><i class="fas fa-lock"></i> Proteger esta publicação com senha</label>
+                    </div>
+                    <div class="post-pw-field" id="postPwField">
+                        <input type="password" id="postPasswordInput" placeholder="Senha para esta publicação...">
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:30px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-check"></i> Publicar</button>
+                    <button type="button" class="btn" onclick="saveDraft()" style="flex:1;"><i class="fas fa-save"></i> Salvar Rascunho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lock Screen -->
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-box">
+            <div class="lock-icon-big">🔒</div>
+            <div class="lock-box-title">Diário Bloqueado</div>
+            <div class="lock-box-sub" id="lockBoxSub">Digite sua senha para acessar</div>
+            <div class="lock-input-wrap">
+                <input type="password" id="lockPwInput" placeholder="Senha..." onkeydown="if(event.key==='Enter')checkAppPw()">
+                <button class="toggle-vis-btn" onclick="toggleLockVis()" type="button"><i class="fas fa-eye" id="lockEyeIco"></i></button>
+            </div>
+            <div class="lock-err" id="lockErrMsg"></div>
+            <button class="btn btn-primary" style="width:100%;" onclick="checkAppPw()"><i class="fas fa-unlock"></i> Desbloquear</button>
+            <div class="lock-reset-link" onclick="doReset()">Esqueceu a senha? Redefinir (apaga tudo)</div>
+        </div>
+    </div>
+
+    <!-- Password Manager -->
+    <div class="pw-modal" id="pwManagerModal">
+        <div class="pw-modal-box">
+            <div class="pw-modal-header">
+                <div class="pw-modal-title"><i class="fas fa-shield-alt" style="color:#9c27b0;"></i> Senha do Diário</div>
+                <button class="close-btn" onclick="closePwManager()"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="pwManagerContent"></div>
+        </div>
+    </div>
+
+    <!-- Post Unlock Modal -->
+    <div class="pw-modal" id="postUnlockModal">
+        <div class="pw-modal-box">
+            <div class="pw-modal-header">
+                <div class="pw-modal-title"><i class="fas fa-lock" style="color:#9c27b0;"></i> Publicação Protegida</div>
+                <button class="close-btn" onclick="closePostUnlock()"><i class="fas fa-times"></i></button>
+            </div>
+            <p style="color:#999;margin-bottom:18px;font-size:0.92em;">Digite a senha para visualizar esta publicação.</p>
+            <div class="lock-input-wrap" style="margin-bottom:12px;">
+                <input type="password" id="postUnlockInput" placeholder="Senha..." onkeydown="if(event.key==='Enter')checkPostPw()">
+                <button class="toggle-vis-btn" onclick="togglePostUnlockVis()" type="button"><i class="fas fa-eye" id="postUnlockEye"></i></button>
+            </div>
+            <div class="lock-err" id="postUnlockErr"></div>
+            <button class="btn btn-primary" style="width:100%;" onclick="checkPostPw()"><i class="fas fa-unlock"></i> Ver publicação</button>
+        </div>
+    </div>
+
+    <script>
+
+        // === STATE ===
+        let posts = JSON.parse(localStorage.getItem('diaryPosts')) || [];
+        let usedHashtags = JSON.parse(localStorage.getItem('usedHashtags')) || [];
+        let currentFilter = null;
+        let currentView = 'all';
+        let editingPostId = null;
+        let selectedHashtags = [];
+        let selectedMood = null;
+        let selectedMoodEmoji = null;
+        let selectedMoodText = null;
+        let viewMode = localStorage.getItem('viewMode') || 'list';
+        let pendingImages = []; // [{data, name}]
+        let existingImages = []; // [data_url]
+        let pendingLinkUrl = null;
+        let pendingPostPwId = null;
+        let unlockedPosts = new Set();
+        let appPassword = localStorage.getItem('appPassword') || null;
+        let appUnlocked = !appPassword;
+        let lockSt = JSON.parse(localStorage.getItem('lockState')) || {attempts:0,lockUntil:null,cooldowns:0,dayLockUntil:null};
+        const carouselIdx = {};
+
+        // === INIT ===
+        document.addEventListener('DOMContentLoaded', () => {
+            if (viewMode === 'grid') {
+                document.getElementById('postsContainer').classList.add('grid-view');
+                document.getElementById('gridModeBtn').classList.add('active');
+                document.getElementById('listModeBtn').classList.remove('active');
+            }
+            if (appPassword && !appUnlocked) {
+                document.getElementById('lockScreen').classList.add('show');
+                updateLockUI();
+            } else {
+                appUnlocked = true;
+                initApp();
+            }
+            setupEventListeners();
+        });
+
+        function initApp() {
+            renderPosts();
+            renderFilterTags();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', e => filterPosts(e.target.value));
+            document.getElementById('imageInput').addEventListener('change', e => handleImagesSelected(e.target.files));
+            document.getElementById('audioInput').addEventListener('change', e => handleAudioSelected(e.target.files[0]));
+            const hi = document.getElementById('hashtagInput');
+            hi.addEventListener('input', e => handleHashtagInput(e.target.value));
+            hi.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); const v = e.target.value.trim(); if(v){addHashtag(v.startsWith('#')?v:'#'+v);e.target.value='';} }
+            });
+            document.getElementById('postTitle').addEventListener('input', e => updateCC('titleCounter', e.target.value.length, 100));
+            document.getElementById('postDescription').addEventListener('input', e => updateCC('descCounter', e.target.value.length, 5000));
+            document.getElementById('postForm').addEventListener('submit', e => { e.preventDefault(); savePost(false); });
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') { closeModal(); closeDropdown(); closeMobileMenu(); closePostUnlock(); closePwManager(); closeLinkPopup(); }
+            });
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.dropdown')) closeDropdown();
+                if (!e.target.closest('.mobile-menu') && !e.target.closest('.mobile-menu-btn')) closeMobileMenu();
+            });
+        }
+
+        // === LOCK SCREEN ===
+        function updateLockUI() {
+            const now = Date.now();
+            const sub = document.getElementById('lockBoxSub');
+            const err = document.getElementById('lockErrMsg');
+            if (lockSt.dayLockUntil && now < lockSt.dayLockUntil) {
+                const rem = Math.ceil((lockSt.dayLockUntil - now)/60000);
+                const h = Math.floor(rem/60), m = rem%60;
+                err.textContent = `Bloqueado por ${h>0?h+'h ':''}${m}min`;
+                sub.textContent = 'Muitas tentativas incorretas';
+            } else if (lockSt.lockUntil && now < lockSt.lockUntil) {
+                const rem = Math.ceil((lockSt.lockUntil - now)/1000);
+                err.textContent = `Aguarde ${rem}s`;
+                sub.textContent = 'Muitas tentativas incorretas';
+                setTimeout(updateLockUI, 1000);
+            } else {
+                err.textContent = lockSt.attempts > 0 ? (10-lockSt.attempts)+' tentativa(s) restante(s)' : '';
+                sub.textContent = 'Digite sua senha para acessar';
+            }
+        }
+
+        function saveLockSt() { localStorage.setItem('lockState', JSON.stringify(lockSt)); }
+
+        function isLockLocked() {
+            const now = Date.now();
+            return (lockSt.dayLockUntil && now < lockSt.dayLockUntil) || (lockSt.lockUntil && now < lockSt.lockUntil);
+        }
+
+        function checkAppPw() {
+            if (isLockLocked()) { updateLockUI(); return; }
+            const v = document.getElementById('lockPwInput').value;
+            if (v === appPassword) {
+                lockSt = {attempts:0,lockUntil:null,cooldowns:0,dayLockUntil:null}; saveLockSt();
+                appUnlocked = true;
+                document.getElementById('lockScreen').classList.remove('show');
+                initApp();
+            } else {
+                lockSt.attempts++;
+                if (lockSt.attempts >= 10) {
+                    lockSt.cooldowns++;
+                    lockSt.attempts = 0;
+                    if (lockSt.cooldowns >= 4) { lockSt.dayLockUntil = Date.now()+86400000; lockSt.cooldowns=0; }
+                    else { lockSt.lockUntil = Date.now()+300000; }
+                }
+                saveLockSt();
+                document.getElementById('lockPwInput').value = '';
+                document.getElementById('lockPwInput').style.borderColor = '#f44336';
+                setTimeout(() => { document.getElementById('lockPwInput').style.borderColor = '#2a2a2a'; }, 700);
+                updateLockUI();
+            }
+        }
+
+        function toggleLockVis() {
+            const i = document.getElementById('lockPwInput');
+            const ic = document.getElementById('lockEyeIco');
+            if (i.type==='password'){i.type='text';ic.className='fas fa-eye-slash';}
+            else{i.type='password';ic.className='fas fa-eye';}
+        }
+
+        async function doReset() {
+            const ok = await showPopup({type:'error',title:'Redefinir Senha',message:'Isso vai apagar TODOS os seus posts e remover a senha. Ação irreversível!',confirm:true,confirmText:'Apagar tudo',cancelText:'Cancelar'});
+            if (ok) {
+                posts=[]; usedHashtags=[]; appPassword=null; appUnlocked=true;
+                lockSt={attempts:0,lockUntil:null,cooldowns:0,dayLockUntil:null};
+                ['diaryPosts','usedHashtags','appPassword','lockState'].forEach(k=>localStorage.removeItem(k));
+                document.getElementById('lockScreen').classList.remove('show');
+                initApp();
+                showNotification('Senha removida e dados apagados', 'info');
+            }
+        }
+
+        // === PASSWORD MANAGER ===
+        function openPasswordManager() {
+            document.getElementById('pwManagerModal').classList.add('show');
+            renderPwManager();
+        }
+        function closePwManager() { document.getElementById('pwManagerModal').classList.remove('show'); }
+
+        function renderPwManager() {
+            const c = document.getElementById('pwManagerContent');
+            if (!appPassword) {
+                c.innerHTML = `
+                    <p style="color:#888;margin-bottom:18px;font-size:0.9em;">Nenhuma senha configurada. Adicione uma para proteger seu diário.</p>
+                    <div class="form-group"><label><i class="fas fa-lock"></i> Nova Senha</label>
+                        <input type="password" id="newPw1" placeholder="Digite a senha..." style="width:100%;padding:14px;background:rgba(10,10,10,0.6);border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Poppins,sans-serif;font-size:1em;"></div>
+                    <div class="form-group"><label><i class="fas fa-lock"></i> Confirmar Senha</label>
+                        <input type="password" id="newPw2" placeholder="Confirme a senha..." style="width:100%;padding:14px;background:rgba(10,10,10,0.6);border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Poppins,sans-serif;font-size:1em;"></div>
+                    <div class="pw-err" id="pwErrMsg"></div>
+                    <button class="btn btn-primary" style="width:100%;" onclick="setPw()"><i class="fas fa-lock"></i> Definir Senha</button>`;
+            } else {
+                c.innerHTML = `
+                    <p style="color:#888;margin-bottom:18px;font-size:0.9em;">O diário está protegido. O que deseja fazer?</p>
+                    <div class="form-group"><label><i class="fas fa-key"></i> Senha Atual</label>
+                        <input type="password" id="currPw" placeholder="Senha atual..." style="width:100%;padding:14px;background:rgba(10,10,10,0.6);border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Poppins,sans-serif;font-size:1em;"></div>
+                    <div class="pw-err" id="pwErrMsg"></div>
+                    <button class="pw-opt-btn" onclick="verifyAndAct('remove')"><i class="fas fa-lock-open"></i> Remover Senha</button>
+                    <button class="pw-opt-btn" onclick="verifyAndAct('change')"><i class="fas fa-sync-alt"></i> Alterar Senha</button>
+                    <button class="pw-opt-btn danger" onclick="closePwManager();doReset()"><i class="fas fa-trash-alt"></i> Redefinir (apaga tudo)</button>`;
+            }
+        }
+
+        function setPw() {
+            const p1 = document.getElementById('newPw1').value;
+            const p2 = document.getElementById('newPw2').value;
+            const err = document.getElementById('pwErrMsg');
+            if (!p1) { err.textContent='Digite uma senha'; return; }
+            if (p1 !== p2) { err.textContent='As senhas não coincidem'; return; }
+            appPassword = p1; localStorage.setItem('appPassword', p1);
+            closePwManager(); showNotification('Senha configurada! 🔒', 'success');
+        }
+
+        function verifyAndAct(action) {
+            const curr = document.getElementById('currPw').value;
+            const err = document.getElementById('pwErrMsg');
+            if (curr !== appPassword) { err.textContent='Senha incorreta'; document.getElementById('currPw').value=''; return; }
+            if (action === 'remove') {
+                appPassword = null; localStorage.removeItem('appPassword');
+                closePwManager(); showNotification('Senha removida!', 'success');
+            } else {
+                document.getElementById('pwManagerContent').innerHTML = `
+                    <p style="color:#888;margin-bottom:18px;font-size:0.9em;">Digite e confirme a nova senha.</p>
+                    <div class="form-group"><label><i class="fas fa-lock"></i> Nova Senha</label>
+                        <input type="password" id="newPw1" placeholder="Nova senha..." style="width:100%;padding:14px;background:rgba(10,10,10,0.6);border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Poppins,sans-serif;font-size:1em;"></div>
+                    <div class="form-group"><label><i class="fas fa-lock"></i> Confirmar</label>
+                        <input type="password" id="newPw2" placeholder="Confirme..." style="width:100%;padding:14px;background:rgba(10,10,10,0.6);border:1px solid #2a2a2a;border-radius:12px;color:#fff;font-family:Poppins,sans-serif;font-size:1em;"></div>
+                    <div class="pw-err" id="pwErrMsg"></div>
+                    <button class="btn btn-primary" style="width:100%;" onclick="changePw()"><i class="fas fa-sync-alt"></i> Alterar Senha</button>`;
+            }
+        }
+
+        function changePw() {
+            const p1 = document.getElementById('newPw1').value;
+            const p2 = document.getElementById('newPw2').value;
+            const err = document.getElementById('pwErrMsg');
+            if (!p1) { err.textContent='Digite a nova senha'; return; }
+            if (p1 !== p2) { err.textContent='As senhas não coincidem'; return; }
+            appPassword = p1; localStorage.setItem('appPassword', p1);
+            closePwManager(); showNotification('Senha alterada! 🔒', 'success');
+        }
+
+        // === POST PASSWORD ===
+        function togglePostPwField() {
+            const cb = document.getElementById('postPwCheck');
+            cb.checked = !cb.checked;
+            document.getElementById('postPwField').classList.toggle('show', cb.checked);
+            if (!cb.checked) document.getElementById('postPasswordInput').value = '';
+        }
+
+        function unlockPost(postId) {
+            pendingPostPwId = postId;
+            document.getElementById('postUnlockInput').value = '';
+            document.getElementById('postUnlockErr').textContent = '';
+            document.getElementById('postUnlockModal').classList.add('show');
+            setTimeout(() => document.getElementById('postUnlockInput').focus(), 150);
+        }
+
+        function closePostUnlock() { document.getElementById('postUnlockModal').classList.remove('show'); pendingPostPwId = null; }
+
+        function togglePostUnlockVis() {
+            const i = document.getElementById('postUnlockInput');
+            const ic = document.getElementById('postUnlockEye');
+            if (i.type==='password'){i.type='text';ic.className='fas fa-eye-slash';}else{i.type='password';ic.className='fas fa-eye';}
+        }
+
+        function checkPostPw() {
+            if (pendingPostPwId === null) return;
+            const post = posts.find(p => p.id === pendingPostPwId);
+            if (!post) return;
+            const val = document.getElementById('postUnlockInput').value;
+            if (val === post.postPassword) {
+                unlockedPosts.add(pendingPostPwId);
+                closePostUnlock();
+                renderPosts();
+            } else {
+                document.getElementById('postUnlockErr').textContent = 'Senha incorreta, tente novamente';
+                document.getElementById('postUnlockInput').value = '';
+                document.getElementById('postUnlockInput').style.borderColor = '#f44336';
+                setTimeout(() => { document.getElementById('postUnlockInput').style.borderColor = '#2a2a2a'; }, 700);
+            }
+        }
+
+        // === LINK DETECTION ===
+        function renderDescWithLinks(text) {
+            const re = /(https?:\/\/[^\s<>"']+)/g;
+            return text.replace(re, (url) => {
+                const safe = url.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+                return `<a class="ext-link" onclick="openLinkPopup('${safe}')">${url}</a>`;
+            });
+        }
+
+        function openLinkPopup(url) {
+            pendingLinkUrl = url;
+            const short = url.length > 70 ? url.substring(0,70)+'...' : url;
+            document.getElementById('linkPopupMsg').textContent = 'Você vai sair do diário para: '+short;
+            document.getElementById('linkPopup').classList.add('show');
+        }
+        function closeLinkPopup() { document.getElementById('linkPopup').classList.remove('show'); pendingLinkUrl=null; }
+        function confirmLinkNav() { if(pendingLinkUrl) window.open(pendingLinkUrl,'_blank'); closeLinkPopup(); }
+
+        // === POPUP ===
+        function showPopup(opts) {
+            return new Promise(res => {
+                const p = document.getElementById('customPopup');
+                const ico = document.getElementById('popupIcon');
+                const ti = document.getElementById('popupTitle');
+                const msg = document.getElementById('popupMessage');
+                const btns = document.getElementById('popupButtons');
+                const iconMap = {success:'fa-check-circle',error:'fa-exclamation-circle',warning:'fa-exclamation-triangle',info:'fa-info-circle'};
+                ico.className = 'popup-icon '+(opts.type||'warning');
+                ico.innerHTML = `<i class="fas ${iconMap[opts.type]||'fa-question-circle'}"></i>`;
+                ti.textContent = opts.title||'Confirmar';
+                msg.textContent = opts.message||'';
+                if (opts.confirm) {
+                    btns.innerHTML = `<button class="popup-btn popup-btn-cancel" onclick="closePopup(false)">${opts.cancelText||'Cancelar'}</button><button class="popup-btn popup-btn-confirm" onclick="closePopup(true)">${opts.confirmText||'Confirmar'}</button>`;
+                } else {
+                    btns.innerHTML = `<button class="popup-btn popup-btn-ok" onclick="closePopup(true)">${opts.okText||'OK'}</button>`;
+                }
+                p.classList.add('show');
+                window._popupRes = res;
+            });
+        }
+        function closePopup(r) { document.getElementById('customPopup').classList.remove('show'); if(window._popupRes){window._popupRes(r);window._popupRes=null;} }
+
+        // === MOBILE MENU ===
+        function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('show'); }
+        function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('show'); }
+        function toggleDropdown() { document.getElementById('moreDropdown').classList.toggle('show'); }
+        function closeDropdown() { const d=document.getElementById('moreDropdown'); if(d)d.classList.remove('show'); }
+
+        // === UTILS ===
+        function updateCC(id, cur, max) {
+            const el = document.getElementById(id);
+            el.textContent = cur+'/'+max;
+            el.classList.toggle('warning', cur > max*0.9);
+        }
+        function fmtDate(ts) {
+            const d=new Date(ts);
+            return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+' às '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+        }
+        function fmtAgo(ts) {
+            const diff=Date.now()-ts,s=Math.floor(diff/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24),mo=Math.floor(d/30),y=Math.floor(d/365);
+            if(s<60)return'agora mesmo';if(m<60)return`há ${m} ${m===1?'minuto':'minutos'}`;if(h<24)return`há ${h} ${h===1?'hora':'horas'}`;if(d<30)return`há ${d} ${d===1?'dia':'dias'}`;if(mo<12)return`há ${mo} ${mo===1?'mês':'meses'}`;
+            const rm=mo%12;return rm===0?`há ${y} ${y===1?'ano':'anos'}`:`há ${y} ${y===1?'ano':'anos'} e ${rm} ${rm===1?'mês':'meses'}`;
+        }
+        function norm(str){return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,'');}
+        function readFile(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(f);});}
+        function fmtTime(s){const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+String(sec).padStart(2,'0');}
+
+        // === IMAGES ===
+        function handleImagesSelected(files) {
+            if (!files||!files.length) return;
+            Promise.all(Array.from(files).map(f=>readFile(f).then(d=>({data:d,name:f.name})))).then(results => {
+                results.forEach(r => { if(!pendingImages.find(i=>i.name===r.name)) pendingImages.push(r); });
+                renderImgPreview();
+            });
+            document.getElementById('imageInput').value = '';
+        }
+
+        function renderImgPreview() {
+            const g = document.getElementById('imagesPreviewGrid');
+            const all = [...existingImages.map((d,i)=>({data:d,ex:true,i})), ...pendingImages.map((img,i)=>({data:img.data,ex:false,i}))];
+            if (!all.length) { g.style.display='none'; g.innerHTML=''; return; }
+            g.style.display='grid';
+            g.innerHTML = all.map(item=>`
+                <div class="img-preview-item">
+                    <img src="${item.data}" alt="">
+                    <button class="rm-img-btn" onclick="removeImg(${item.ex},${item.i})">✕</button>
+                </div>`).join('');
+        }
+
+        function removeImg(isEx, idx) {
+            if (isEx) existingImages.splice(idx,1); else pendingImages.splice(idx,1);
+            renderImgPreview();
+        }
+
+        // === AUDIO ===
+        function handleAudioSelected(file) {
+            const prev = document.getElementById('audioPreview');
+            if (!file) { prev.classList.remove('show'); prev.innerHTML=''; return; }
+            readFile(file).then(data => {
+                prev.innerHTML = buildAudioPlayer(data, file.name) + `<br><button class="remove-file-btn" onclick="removeAudio()"><i class="fas fa-times"></i> Remover áudio</button>`;
+                prev.classList.add('show');
+                setTimeout(initAudioPlayers, 80);
+            });
+        }
+
+        function removeAudio() {
+            document.getElementById('audioInput').value = '';
+            const p = document.getElementById('audioPreview');
+            p.innerHTML = ''; p.classList.remove('show');
+        }
+
+        function buildAudioPlayer(src, name) {
+            const id = 'ap'+Math.random().toString(36).substr(2,9);
+            return `<div class="audio-player" data-id="${id}">
+                <button class="audio-play-btn" onclick="toggleAudio('${id}')"><i class="fas fa-play" id="pi_${id}"></i></button>
+                <div class="audio-info">
+                    <div class="audio-title-text">${name||'Áudio'}</div>
+                    <div class="audio-progress-row">
+                        <div class="audio-progress-bar-wrap" onclick="seekAudio(event,'${id}')"><div class="audio-progress-fill" id="apf_${id}" style="width:0%"></div></div>
+                        <div class="audio-time-display" id="atd_${id}">0:00 / 0:00</div>
+                    </div>
+                </div>
+                <audio id="aud_${id}" src="${src}" style="display:none;" preload="metadata"></audio>
+            </div>`;
+        }
+
+        function initAudioPlayers() {
+            document.querySelectorAll('.audio-player').forEach(pl => {
+                const id = pl.dataset.id; if(!id) return;
+                const a = document.getElementById('aud_'+id); if(!a||a._init) return;
+                a._init = true;
+                a.addEventListener('timeupdate', () => {
+                    if(!a.duration) return;
+                    const pct=(a.currentTime/a.duration)*100;
+                    const fill=document.getElementById('apf_'+id),td=document.getElementById('atd_'+id);
+                    if(fill)fill.style.width=pct+'%';
+                    if(td)td.textContent=fmtTime(a.currentTime)+' / '+fmtTime(a.duration);
+                });
+                a.addEventListener('ended',()=>{ const pi=document.getElementById('pi_'+id); if(pi)pi.className='fas fa-play'; });
+            });
+        }
+
+        function toggleAudio(id) {
+            const a=document.getElementById('aud_'+id),pi=document.getElementById('pi_'+id);
+            if(!a)return;
+            if(a.paused){
+                document.querySelectorAll('audio').forEach(x=>{if(x!==a&&!x.paused){x.pause();const oid=x.id.replace('aud_','');const oic=document.getElementById('pi_'+oid);if(oic)oic.className='fas fa-play';}});
+                a.play(); if(pi)pi.className='fas fa-pause';
+            } else { a.pause(); if(pi)pi.className='fas fa-play'; }
+        }
+
+        function seekAudio(e,id) {
+            const a=document.getElementById('aud_'+id); if(!a||!a.duration)return;
+            const r=e.currentTarget.getBoundingClientRect();
+            a.currentTime=((e.clientX-r.left)/r.width)*a.duration;
+        }
+
+        // === HASHTAGS ===
+        function handleHashtagInput(v) {
+            const s=document.getElementById('hashtagSuggestions');
+            const pool=usedHashtags.filter(t=>!selectedHashtags.includes(t));
+            const filtered=v?pool.filter(t=>t.toLowerCase().includes(v.toLowerCase())):pool;
+            if(filtered.length>0){
+                s.innerHTML=filtered.map(t=>`<div class="hashtag-suggestion" onclick="addHashtagFromSug('${t}')"><i class="fas fa-hashtag"></i>${t.substring(1)}</div>`).join('');
+                s.classList.add('show');
+            } else s.classList.remove('show');
+        }
+        function addHashtagFromSug(t){addHashtag(t);document.getElementById('hashtagInput').value='';document.getElementById('hashtagSuggestions').classList.remove('show');}
+        function addHashtag(t){
+            if(!t.startsWith('#'))t='#'+t;t=t.toLowerCase();
+            if(!selectedHashtags.includes(t)){selectedHashtags.push(t);renderTags();if(!usedHashtags.includes(t)){usedHashtags.push(t);localStorage.setItem('usedHashtags',JSON.stringify(usedHashtags));}}
+        }
+        function removeHashtag(t){selectedHashtags=selectedHashtags.filter(x=>x!==t);renderTags();}
+        function renderTags(){
+            document.getElementById('selectedHashtags').innerHTML=selectedHashtags.map(t=>`
+                <div class="hashtag-chip"><i class="fas fa-hashtag"></i>${t.substring(1)}<button type="button" onclick="removeHashtag('${t}')"><i class="fas fa-times"></i></button></div>`).join('');
+        }
+
+        // === MODAL ===
+        function openModal(mode, postId=null) {
+            pendingImages=[]; existingImages=[];
+            document.getElementById('imagesPreviewGrid').style.display='none';
+            document.getElementById('imagesPreviewGrid').innerHTML='';
+            document.getElementById('audioPreview').classList.remove('show');
+            document.getElementById('audioPreview').innerHTML='';
+            document.getElementById('postPwCheck').checked=false;
+            document.getElementById('postPwField').classList.remove('show');
+            document.getElementById('postPasswordInput').value='';
+
+            if (mode==='edit'&&postId) {
+                const post=posts.find(p=>p.id===postId);
+                if (post) {
+                    document.getElementById('modalTitle').innerHTML='<i class="fas fa-edit"></i> Editar Publicação';
+                    document.getElementById('postTitle').value=post.title;
+                    document.getElementById('postDescription').value=post.description;
+                    selectedHashtags=[...post.hashtags]; renderTags();
+                    editingPostId=postId;
+                    updateCC('titleCounter',post.title.length,100);
+                    updateCC('descCounter',post.description.length,5000);
+                    if(post.mood&&post.moodEmoji) { selectedMood=post.mood;selectedMoodEmoji=post.moodEmoji;selectedMoodText=post.moodText; document.querySelectorAll('.mood-option').forEach(o=>o.classList.toggle('selected',o.dataset.mood===post.mood)); }
+
+                    // Images
+                    const imgs=post.images&&post.images.length>0?post.images:(post.image?[post.image]:[]);
+                    existingImages=[...imgs]; renderImgPreview();
+
+                    // Audio
+                    if(post.audio){
+                        const prev=document.getElementById('audioPreview');
+                        prev.innerHTML=buildAudioPlayer(post.audio,post.audioName||'Áudio')+`<br><button class="remove-file-btn" onclick="removeAudio()"><i class="fas fa-times"></i> Remover áudio</button>`;
+                        prev.classList.add('show');
+                        setTimeout(initAudioPlayers,80);
+                    }
+
+                    // Post pw
+                    if(post.postPassword){
+                        document.getElementById('postPwCheck').checked=true;
+                        document.getElementById('postPwField').classList.add('show');
+                        document.getElementById('postPasswordInput').value=post.postPassword;
+                    }
+                }
+            } else {
+                document.getElementById('modalTitle').innerHTML='<i class="fas fa-plus"></i> Nova Publicação';
+                document.getElementById('postForm').reset();
+                selectedHashtags=[]; selectedMood=null; selectedMoodEmoji=null; selectedMoodText=null;
+                renderTags(); updateCC('titleCounter',0,100); updateCC('descCounter',0,5000);
+                document.querySelectorAll('.mood-option').forEach(m=>m.classList.remove('selected'));
+                editingPostId=null;
+            }
+            document.getElementById('postModal').classList.add('show');
+            document.body.style.overflow='hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('postModal').classList.remove('show');
+            document.body.style.overflow='auto';
+            document.getElementById('hashtagSuggestions').classList.remove('show');
+        }
+
+        // === MOOD ===
+        function selectMood(mood,emoji,text) {
+            if(selectedMood===mood){selectedMood=null;selectedMoodEmoji=null;selectedMoodText=null;document.querySelectorAll('.mood-option').forEach(o=>o.classList.remove('selected'));}
+            else{selectedMood=mood;selectedMoodEmoji=emoji;selectedMoodText=text;document.querySelectorAll('.mood-option').forEach(o=>o.classList.toggle('selected',o.dataset.mood===mood));}
+        }
+
+        // === VIEW MODE ===
+        function setViewMode(mode) {
+            viewMode=mode; localStorage.setItem('viewMode',mode);
+            document.getElementById('postsContainer').classList.toggle('grid-view',mode==='grid');
+            document.getElementById('listModeBtn').classList.toggle('active',mode==='list');
+            document.getElementById('gridModeBtn').classList.toggle('active',mode==='grid');
+        }
+
+        // === SAVE POST ===
+        async function savePost(isDraft=false) {
+            const title=document.getElementById('postTitle').value.trim();
+            const desc=document.getElementById('postDescription').value.trim();
+            if(!title){showNotification('O título é obrigatório!','error');return;}
+            if(!desc){showNotification('A descrição é obrigatória!','error');return;}
+
+            const audioFile=document.getElementById('audioInput').files[0];
+            const pwEnabled=document.getElementById('postPwCheck').checked;
+            const postPw=pwEnabled?document.getElementById('postPasswordInput').value||null:null;
+            const existing=editingPostId?posts.find(p=>p.id===editingPostId):null;
+
+            const post={
+                id:editingPostId||Date.now(),title,description:desc,
+                hashtags:[...selectedHashtags],
+                timestamp:existing?existing.timestamp:Date.now(),
+                editedAt:editingPostId?Date.now():null,
+                isDraft,isPinned:existing?existing.isPinned:false,
+                isFavorite:existing?existing.isFavorite:false,
+                mood:selectedMood,moodEmoji:selectedMoodEmoji,moodText:selectedMoodText,
+                postPassword:postPw
+            };
+
+            // Compile images
+            const finalImages=[...existingImages,...pendingImages.map(i=>i.data)];
+            post.images=finalImages;
+            post.image=finalImages[0]||null;
+
+            // Audio
+            const audioPrevShowing=document.getElementById('audioPreview').classList.contains('show');
+            if(audioFile){
+                try{post.audio=await readFile(audioFile);post.audioName=audioFile.name;}catch(e){console.error(e);}
+            } else if(editingPostId&&existing&&audioPrevShowing){
+                post.audio=existing.audio; post.audioName=existing.audioName;
+            } else { post.audio=null; post.audioName=null; }
+
+            finalizeSave(post, isDraft);
+        }
+
+        function finalizeSave(post, isDraft) {
+            if(editingPostId){const idx=posts.findIndex(p=>p.id===editingPostId);posts[idx]=post;unlockedPosts.delete(editingPostId);}
+            else posts.unshift(post);
+            localStorage.setItem('diaryPosts',JSON.stringify(posts));
+            closeModal(); renderPosts(); renderFilterTags();
+            showNotification(isDraft?'Rascunho salvo!':(editingPostId?'Publicação atualizada!':'Publicação salva!'));
+        }
+
+        function saveDraft(){savePost(true);}
+
+        // === DELETE/PIN/FAV ===
+        async function deletePost(id) {
+            const ok=await showPopup({type:'warning',title:'Excluir Publicação',message:'Tem certeza? Esta ação não pode ser desfeita.',confirm:true,confirmText:'Excluir',cancelText:'Cancelar'});
+            if(ok){posts=posts.filter(p=>p.id!==id);unlockedPosts.delete(id);localStorage.setItem('diaryPosts',JSON.stringify(posts));renderPosts();renderFilterTags();showNotification('Publicação excluída!');}
+        }
+        function togglePin(id){const p=posts.find(p=>p.id===id);p.isPinned=!p.isPinned;localStorage.setItem('diaryPosts',JSON.stringify(posts));renderPosts();showNotification(p.isPinned?'Fixada!':'Desafixada!');}
+        function toggleFavorite(id){const p=posts.find(p=>p.id===id);p.isFavorite=!p.isFavorite;localStorage.setItem('diaryPosts',JSON.stringify(posts));renderPosts();showNotification(p.isFavorite?'Favoritado!':'Desfavoritado!');}
+        function publishDraft(id){const p=posts.find(p=>p.id===id);p.isDraft=false;p.timestamp=Date.now();localStorage.setItem('diaryPosts',JSON.stringify(posts));renderPosts();showNotification('Publicado!');}
+        function duplicatePost(id){const o=posts.find(p=>p.id===id);const np={...o,id:Date.now(),timestamp:Date.now(),title:o.title+' (cópia)',editedAt:null,isPinned:false,postPassword:null};posts.unshift(np);localStorage.setItem('diaryPosts',JSON.stringify(posts));renderPosts();showNotification('Duplicado!');}
+
+        // === VIEWS ===
+        function showAllPosts(){currentView='all';currentFilter=null;updateSecTitle('Todas as Publicações','th-list');renderPosts();closeMobileMenu();}
+        function showDrafts(){currentView='drafts';currentFilter=null;updateSecTitle('Rascunhos','file-alt');renderPosts();closeMobileMenu();}
+        function showFavorites(){currentView='favorites';currentFilter=null;updateSecTitle('Favoritos','star');renderPosts();closeMobileMenu();}
+        function showAll(){showAllPosts();}
+        function updateSecTitle(t,ic){document.getElementById('sectionIcon').className='fas fa-'+ic;document.getElementById('sectionTitleText').textContent=t;}
+        function filterByHashtag(h){currentView='all';currentFilter=h;updateSecTitle('Posts com '+h,'hashtag');renderPosts();}
+        function filterPosts(s){const ns=norm(s);let f=getFiltered();if(ns)f=f.filter(p=>norm(p.title).includes(ns)||norm(p.description).includes(ns));renderList(f);}
+        function getFiltered(){
+            let f=[...posts];
+            if(currentView==='drafts')f=f.filter(p=>p.isDraft);
+            else if(currentView==='favorites')f=f.filter(p=>p.isFavorite&&!p.isDraft);
+            else f=f.filter(p=>!p.isDraft);
+            if(currentFilter)f=f.filter(p=>p.hashtags.includes(currentFilter));
+            f.sort((a,b)=>{if(a.isPinned&&!b.isPinned)return -1;if(!a.isPinned&&b.isPinned)return 1;return b.timestamp-a.timestamp;});
+            return f;
+        }
+        function renderPosts(){renderList(getFiltered());}
+
+        // === CAROUSEL ===
+        function carMove(cid,dir){
+            const tr=document.getElementById('ctr_'+cid); if(!tr)return;
+            const tot=tr.children.length;
+            if(!carouselIdx[cid])carouselIdx[cid]=0;
+            carouselIdx[cid]=Math.max(0,Math.min(tot-1,carouselIdx[cid]+dir));
+            applyCarousel(cid,tot);
+        }
+        function carGoto(cid,idx){const tr=document.getElementById('ctr_'+cid);if(!tr)return;carouselIdx[cid]=idx;applyCarousel(cid,tr.children.length);}
+        function applyCarousel(cid,tot){
+            const tr=document.getElementById('ctr_'+cid),dots=document.getElementById('cdots_'+cid),cnt=document.getElementById('ccnt_'+cid);
+            const idx=carouselIdx[cid]||0;
+            if(tr)tr.style.transform=`translateX(-${idx*100}%)`;
+            if(dots)dots.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+            if(cnt)cnt.textContent=(idx+1)+' / '+tot;
+        }
+        function initCarouselTouch(){
+            document.querySelectorAll('.carousel-wrapper').forEach(w=>{
+                if(w._ti)return; w._ti=true;
+                let sx=0;
+                w.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+                w.addEventListener('touchend',e=>{
+                    const diff=sx-e.changedTouches[0].clientX;
+                    const tr=w.querySelector('.carousel-track');
+                    if(!tr||Math.abs(diff)<40)return;
+                    carMove(tr.id.replace('ctr_',''),diff>0?1:-1);
+                },{passive:true});
+            });
+        }
+
+        // === RENDER LIST ===
+        function renderList(filtered) {
+            const container=document.getElementById('postsContainer');
+            if(!filtered.length){
+                let msg='Nenhuma publicação encontrada',ico='fas fa-pen-fancy';
+                if(currentView==='drafts'){msg='Nenhum rascunho';ico='fas fa-file-alt';}
+                else if(currentView==='favorites'){msg='Nenhum favorito';ico='fas fa-star';}
+                else if(currentFilter){msg='Nenhuma publicação com '+currentFilter;ico='fas fa-hashtag';}
+                container.innerHTML=`<div class="empty-state"><i class="${ico}"></i><h3>${msg}</h3>${currentView!=='all'||currentFilter?'<button class="btn" onclick="showAllPosts()" style="margin-top:20px;"><i class="fas fa-th-list"></i> Ver todas</button>':''}</div>`;
+                return;
+            }
+
+            container.innerHTML=filtered.map(post=>{
+                const badges=[];
+                if(post.isPinned)badges.push('<span class="badge badge-pinned"><i class="fas fa-thumbtack"></i> Fixado</span>');
+                if(post.isDraft)badges.push('<span class="badge badge-draft"><i class="fas fa-file-alt"></i> Rascunho</span>');
+                if(post.isFavorite)badges.push('<span class="badge badge-favorite"><i class="fas fa-star"></i> Favorito</span>');
+                if(post.editedAt)badges.push('<span class="badge badge-edited"><i class="fas fa-pencil-alt"></i> Editado</span>');
+                if(post.postPassword)badges.push('<span class="badge badge-locked"><i class="fas fa-lock"></i> Protegido</span>');
+
+                const timeInfo=[`<span title="${fmtDate(post.timestamp)}"><i class="far fa-clock"></i> ${fmtAgo(post.timestamp)}</span>`,`<span class="separator">•</span><span style="color:#777">${fmtDate(post.timestamp)}</span>`];
+                if(post.editedAt)timeInfo.push(`<span class="separator">•</span><span class="edited-info">editado ${fmtAgo(post.editedAt)}</span>`);
+
+                const locked=post.postPassword&&!unlockedPosts.has(post.id);
+                const imgs=post.images&&post.images.length>0?post.images:(post.image?[post.image]:[]);
+                const cid='c'+post.id;
+
+                let media='';
+                if(!locked&&imgs.length>1){
+                    media=`<div class="carousel-wrapper">
+                        <div class="carousel-track" id="ctr_${cid}">${imgs.map(img=>`<div class="carousel-slide"><img src="${img}" alt="${post.title}"></div>`).join('')}</div>
+                        <button class="carousel-btn carousel-prev" onclick="carMove('${cid}',-1)"><i class="fas fa-chevron-left"></i></button>
+                        <button class="carousel-btn carousel-next" onclick="carMove('${cid}',1)"><i class="fas fa-chevron-right"></i></button>
+                        <div class="carousel-counter" id="ccnt_${cid}">1 / ${imgs.length}</div>
+                    </div><div class="carousel-dots" id="cdots_${cid}">${imgs.map((_,i)=>`<button class="carousel-dot${i===0?' active':''}" onclick="carGoto('${cid}',${i})"></button>`).join('')}</div>`;
+                } else if(!locked&&imgs.length===1){
+                    media=`<div class="post-media"><img src="${imgs[0]}" alt="${post.title}"></div>`;
+                }
+
+                const audioHtml = post.audio ? buildAudioPlayer(post.audio, post.audioName||'Áudio') : '';
+                const desc = renderDescWithLinks(post.description);
+
+                return `<div class="post${post.isPinned?' pinned':''}${post.isDraft?' draft':''}" style="position:relative;overflow:hidden;">
+                    <div class="${locked?'post-blur-content':''}">
+                        <div class="post-header">
+                            <div class="post-title-section">
+                                ${badges.length?`<div class="post-badges">${badges.join('')}</div>`:''}
+                                ${post.moodEmoji&&post.moodText?`<div class="post-mood-display"><span class="mood-emoji">${post.moodEmoji}</span>${post.moodText}</div>`:''}
+                                <h2 class="post-title">${post.title}</h2>
+                                <div class="post-time">${timeInfo.join(' ')}</div>
+                            </div>
+                            <div class="post-actions">
+                                ${post.isDraft?`<button class="post-action-btn" onclick="publishDraft(${post.id})" title="Publicar"><i class="fas fa-paper-plane"></i></button>`:''}
+                                <button class="post-action-btn${post.isFavorite?' active':''}" onclick="toggleFavorite(${post.id})" title="Favorito"><i class="fas fa-star"></i></button>
+                                <button class="post-action-btn${post.isPinned?' active':''}" onclick="togglePin(${post.id})" title="Fixar"><i class="fas fa-thumbtack"></i></button>
+                                <button class="post-action-btn" onclick="duplicatePost(${post.id})" title="Duplicar"><i class="fas fa-copy"></i></button>
+                                <button class="post-action-btn" onclick="openModal('edit',${post.id})" title="Editar"><i class="fas fa-edit"></i></button>
+                                <button class="post-action-btn" onclick="deletePost(${post.id})" title="Excluir"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="post-description">${desc}</div>
+                        ${media}${audioHtml}
+                        ${post.hashtags.length?`<div class="post-hashtags">${post.hashtags.map(t=>`<span class="post-hashtag" onclick="filterByHashtag('${t}')"><i class="fas fa-hashtag"></i>${t.substring(1)}</span>`).join('')}</div>`:''}
+                    </div>
+                    ${locked?`<div class="post-lock-overlay" onclick="unlockPost(${post.id})"><div class="lock-ico">🔒</div><div class="lock-lbl">Publicação Protegida</div><div class="lock-hint">Clique para digitar a senha</div></div>`:''}
+                </div>`;
+            }).join('');
+
+            setTimeout(()=>{ initAudioPlayers(); initCarouselTouch(); }, 80);
+        }
+
+        // === FILTER TAGS ===
+        function renderFilterTags() {
+            const c=document.getElementById('filterTags');
+            const all=[...new Set(posts.flatMap(p=>p.hashtags))];
+            let html='';
+            if(currentView!=='all'||currentFilter)html+=`<div class="filter-tag active" onclick="showAll()"><i class="fas fa-list"></i> Todas</div>`;
+            html+=all.map(t=>`<div class="filter-tag${currentFilter===t?' active':''}" onclick="filterByHashtag('${t}')"><i class="fas fa-hashtag"></i>${t.substring(1)}</div>`).join('');
+            c.innerHTML=html;
+        }
+
+        // === STATS ===
+        function showStats(){
+            closeDropdown();closeMobileMenu();
+            const pub=posts.filter(p=>!p.isDraft),dr=posts.filter(p=>p.isDraft),fav=posts.filter(p=>p.isFavorite);
+            const words=pub.reduce((s,p)=>s+(p.description?p.description.split(/\s+/).filter(w=>w).length:0),0);
+            const imgs=posts.filter(p=>p.images?p.images.length>0:p.image).length;
+            const auds=posts.filter(p=>p.audio).length;
+            const prot=posts.filter(p=>p.postPassword).length;
+            const udays=new Set(pub.map(p=>new Date(p.timestamp).toDateString())).size;
+            const mh=getMostHashtag();
+            const fp=posts.length?new Date(Math.min(...posts.map(p=>p.timestamp))):null;
+            const ds=fp?Math.floor((Date.now()-fp.getTime())/86400000):0;
+            const sb=(v,l,col='#fff')=>`<div style="text-align:center;padding:18px;background:rgba(42,42,42,0.5);border-radius:12px;"><div style="font-size:2.2em;font-weight:700;color:${col};">${v}</div><div style="color:#888;margin-top:4px;font-size:0.85em;">${l}</div></div>`;
+            document.body.insertAdjacentHTML('beforeend',`
+                <div class="modal show" onclick="if(event.target===this)this.remove()">
+                    <div class="modal-content" style="max-width:700px;" onclick="event.stopPropagation()">
+                        <div class="modal-header"><h2><i class="fas fa-chart-bar"></i> Estatísticas</h2><button class="close-btn" onclick="this.closest('.modal').remove()"><i class="fas fa-times"></i></button></div>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;">
+                            ${sb(pub.length,'Publicações')}${sb(words.toLocaleString(),'Palavras')}${sb(udays,'Dias ativos')}${sb(dr.length,'Rascunhos')}${sb(fav.length,'Favoritos','#ffaa00')}${sb(imgs,'Com imagens')}${sb(auds,'Com áudios')}${sb(prot,'Protegidas','#ce93d8')}
+                        </div>
+                        <div style="margin-top:18px;padding:18px;background:rgba(42,42,42,0.5);border-radius:12px;"><div style="color:#aaa;margin-bottom:8px;font-size:0.85em;"><i class="fas fa-hashtag"></i> Tag mais usada</div><div style="font-size:1.2em;">${mh||'Nenhuma'}</div></div>
+                        ${ds>0?`<div style="margin-top:12px;padding:18px;background:rgba(42,42,42,0.5);border-radius:12px;"><div style="color:#aaa;margin-bottom:8px;font-size:0.85em;"><i class="fas fa-calendar"></i> Dias desde a primeira publicação</div><div style="font-size:1.2em;">${ds} dias</div></div>`:''}
+                    </div>
+                </div>`);
+        }
+
+        function getMostHashtag(){
+            const c={};posts.forEach(p=>p.hashtags.forEach(t=>{c[t]=(c[t]||0)+1;}));
+            return Object.entries(c).sort((a,b)=>b[1]-a[1])[0]?.[0]||null;
+        }
+
+        // === EXPORT/IMPORT ===
+        function exportData(){
+            closeDropdown();closeMobileMenu();
+            const blob=new Blob([JSON.stringify({posts,hashtags:usedHashtags,exportDate:new Date().toISOString()},null,2)],{type:'application/json'});
+            const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`diario-backup-${new Date().toISOString().split('T')[0]}.json`;a.click();URL.revokeObjectURL(url);
+            showNotification('Exportado!','success');
+        }
+        function importData(){closeDropdown();closeMobileMenu();document.getElementById('importFileInput').click();}
+        async function handleImportFile(e){
+            const f=e.target.files[0];if(!f)return;
+            const reader=new FileReader();reader.onload=async ev=>{
+                try{const data=JSON.parse(ev.target.result);
+                const ok=await showPopup({type:'warning',title:'Importar',message:'Isso vai substituir todos os dados atuais. Continuar?',confirm:true,confirmText:'Importar',cancelText:'Cancelar'});
+                if(ok){posts=data.posts||[];usedHashtags=data.hashtags||[];localStorage.setItem('diaryPosts',JSON.stringify(posts));localStorage.setItem('usedHashtags',JSON.stringify(usedHashtags));renderPosts();renderFilterTags();showNotification('Importado!','success');}}
+                catch{await showPopup({type:'error',title:'Erro',message:'Arquivo inválido.'});}
+            };reader.readAsText(f);e.target.value='';
+        }
+
+        // === GALLERY ===
+        function showGallery(){
+            closeDropdown();closeMobileMenu();
+            const ps=posts.filter(p=>!p.isDraft&&(p.images&&p.images.length>0||p.image));
+            if(!ps.length){showNotification('Nenhuma imagem no diário','info');return;}
+            document.body.insertAdjacentHTML('beforeend',`
+                <div class="modal show" onclick="if(event.target===this)this.remove()">
+                    <div class="modal-content" style="max-width:900px;" onclick="event.stopPropagation()">
+                        <div class="modal-header"><h2><i class="fas fa-images"></i> Galeria</h2><button class="close-btn" onclick="this.closest('.modal').remove()"><i class="fas fa-times"></i></button></div>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;">
+                            ${ps.map(p=>{const imgs=p.images&&p.images.length>0?p.images:[p.image];return imgs.map(img=>`<div style="position:relative;cursor:pointer;border-radius:10px;overflow:hidden;aspect-ratio:1;" onclick="openModal('edit',${p.id});this.closest('.modal').remove()"><img src="${img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:8px 8px 7px;font-size:0.78em;">${p.title}</div></div>`).join('');}).join('')}
+                        </div>
+                    </div>
+                </div>`);
+        }
+
+        // === NOTIFICATION ===
+        function showNotification(msg,type='success'){
+            const n=document.createElement('div');
+            const cols={success:'linear-gradient(135deg,#4caf50,#388e3c)',error:'linear-gradient(135deg,#f44336,#d32f2f)',warning:'linear-gradient(135deg,#ff9800,#f57c00)',info:'linear-gradient(135deg,#2196f3,#1976d2)'};
+            const icos={success:'fa-check-circle',error:'fa-exclamation-circle',warning:'fa-exclamation-triangle',info:'fa-info-circle'};
+            n.style.cssText=`position:fixed;top:20px;right:20px;background:${cols[type]||cols.success};color:#fff;padding:16px 24px;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,0.5);z-index:200000;font-weight:500;display:flex;align-items:center;gap:10px;max-width:340px;font-family:Poppins,sans-serif;font-size:0.93em;animation:sni 0.3s ease;`;
+            n.innerHTML=`<i class="fas ${icos[type]||icos.success}"></i> ${msg}`;
+            const st=document.createElement('style');st.textContent='@keyframes sni{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes sno{from{transform:translateX(0);opacity:1}to{transform:translateX(400px);opacity:0}}';
+            document.head.appendChild(st);document.body.appendChild(n);
+            setTimeout(()=>{n.style.animation='sno 0.3s ease';setTimeout(()=>{n.remove();st.remove();},300);},3000);
+        }
+
+    </script>
+</body>
+</html>
